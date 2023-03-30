@@ -13,15 +13,17 @@ By Team Lainakoodarit
 You can use the virtual enviroment created for the project.
 
 ```bash
-  pip3 install virtualenv
-  source venv/bin/activate
-  # venv/venv/activate.bat  -- for windows
-  # Deactivate the virtual enviroment
-  deactivate
+pip3 install virtualenv
+source venv/bin/activate
+# venv/venv/activate.bat  -- for windows
+# Deactivate the virtual enviroment
+deactivate
+# add installed pip packages to requirements.txt
+pip3 freeze > requirements.txt
 ```
 
 Or you can install the packages locally to your user with the following
 
 ```bash
-  pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
