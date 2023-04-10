@@ -17,15 +17,15 @@ class IndexView(generic.ListView):
 
         # return Question.objects.order_by('-pub_date')[:5]
         return [{
-            "title": "the thoughts of Petri - an autobiography",
+            "title": "The Thoughts of Petri - an autobiography",
             "author": "Petri Kuittinen",
             "genre": "Autobiography",
             "thumbnail": "imgs/placeholder-book-1.jpg"
         },
             {
-            "title": "Python 101 for javascript developers",
-            "author": "Some Dude",
-            "genre": "Documentation",
+            "title": "Python 101 for JavaScript developers",
+            "author": "Dr. Clause Guard",
+            "genre": "Education",
             "thumbnail": "imgs/placeholder-book-2.jpg"
         },
             {
@@ -35,14 +35,14 @@ class IndexView(generic.ListView):
             "thumbnail": "imgs/placeholder-book-3.jpg"
         },
             {
-            "title": "Databases are overrated",
+            "title": "To ; or not to ;",
             "author": "reddit.com",
             "genre": "Humor",
             "thumbnail": "imgs/placeholder-book-4.jpg"
         },
             {
-            "title": "Testing testing",
-            "author": "Some Dude",
+            "title": "How do I center a div?",
+            "author": "sakuk",
             "genre": "Documentation",
             "thumbnail": "imgs/placeholder-book-5.jpg"
         }]
