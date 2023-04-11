@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Product page</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- <link href="css/style.css" rel="stylesheet"/> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-neutral-100">
+    <div class="w-full max-w-[1000px] mx-auto">
+      <nav class="flex justify-between p-5">
+        <div class="flex gap-x-2 justify-center items-end">
+          <h1 class="text-center text-xl font-bold">Borrow System</h1>
+          <p class="text-center opacity-75">| Lainakoodarit</p>
+        </div>
+        <ul class="flex gap-x-5">
+          <li>Books</li>
+          <li>Music</li>
+          <li>Movies</li>
+        </ul>
+      </nav>
+    </div>
+    <article class="max-w-[1200px] mx-auto">
+      <div class="grid md:grid-cols-4 gap-y-8">
+        {% for prod in product %}
+        <div class="md:col-span-2 bg-neutral-400">
+          {% load static %}
+          <!-- Product image -->
+          <div class="img-container w-full h-full overflow-hidden relative">
+            <img src="{% static prod.thumbnail %}" alt="product image" width="300" height="200"
+              class="object-cover h-full w-full transition-all hover:scale-110"/>
+          </div>
+        </div>
+        <!-- product info -->
+        <div class="px-10 md:col-span-2">
+          <div class="product-card shadow-lg border-red-400 h-full rounded-lg p-4
+            flex flex-col gap-y-5">
+            <div class="prouct-header">
+              <h1 class="text-2xl font-bold">{{ prod.title }}</h1>
+              <p>{{prod.category}}</p>
+            </div>
+            <!-- <hr class="my-5 border-neutral-300"/> -->
+            <!-- creator info -->
+            <div class="product-creator flex items-center gap-x-5">
+              <h2 class="font-semibold">Author:</h2>
+              <h2>{{ prod.author }}</h2>
+            </div>
+            <!-- <hr class="my-5 border-neutral-300"/> -->
+            <!-- description -->
+            <div>
+              <h3 class="font-semibold">Description</h3>
+              <p class="line-clamp-5 my-2">{{ prod.description }}</p>
+              <!-- TODO: make read more button work -->
+              <button class="underline">Read more</button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </article>
+  </body>
+</html>

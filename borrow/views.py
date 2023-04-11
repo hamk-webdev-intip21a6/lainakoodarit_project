@@ -46,3 +46,28 @@ class IndexView(generic.ListView):
             "genre": "Documentation",
             "thumbnail": "imgs/placeholder-book-5.jpg"
         }]
+
+
+# TODO: change to inherit detailview instead of listview
+class ProductView(generic.ListView):
+    template_name = 'borrow/product_page.html'
+    # TODO: change this to a database object when database is ready
+    # model = Product
+    context_object_name = 'product'
+
+    def get_queryset(self):
+        """Return the clicked on product"""
+        return [{
+            "title": "How do I center a div?",
+            "author": "sakuk",
+            "genre": "Documentation",
+            "thumbnail": "imgs/placeholder-book-5.jpg",
+            "category": "book",
+            "description": "'How to Center a Div' is a comprehensive guide for \
+            web developers and designers seeking to perfect the art of centering \
+            div elements on a webpage. This book offers clear and concise explanations \
+            of different techniques for achieving perfect div centering, including CSS \
+            properties such as margin, padding, display, and position. Additionally, \
+            readers will learn how to use different types of layouts, such as flexbox \
+            and grid, to create responsive and dynamic centering solutions."
+        }]

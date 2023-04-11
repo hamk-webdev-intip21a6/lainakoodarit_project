@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('borrow/', include('borrow.urls')),
+    # for live reloading the browser in development
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
