@@ -14,6 +14,7 @@ You can use the virtual enviroment created for the project.
 
 ```bash
 pip3 install virtualenv
+virtualenv venv
 source venv/bin/activate
 # venv/venv/activate.bat  -- for windows
 # Deactivate the virtual enviroment

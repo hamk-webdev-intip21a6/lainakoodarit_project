@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # django live browser reload for development
+    # django live browser reload for development, when you save a file, it
+    # reloads the browser, very handy
     'django_browser_reload',
 ]
 
