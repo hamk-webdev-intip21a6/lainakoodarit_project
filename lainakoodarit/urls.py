@@ -18,7 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('borrow/', include('borrow.urls')),
     # for browser reload to work in the "DEBUG = True" server
     path("__reload__/", include("django_browser_reload.urls")),
+    # using the borrowing application as the root application
+    path('', include('borrow.urls')),
 ]
