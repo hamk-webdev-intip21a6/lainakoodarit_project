@@ -62,12 +62,13 @@ class ProductView(generic.ListView):
             "author": "sakuk",
             "genre": "Documentation",
             "thumbnail": "imgs/placeholder-book-5.jpg",
-            "category": "book",
+            "category": "Book",
+            "tags": ["cool", "epic", "thought-provoking"],
+            "date_added": "12.2.2023",
+            "language": "English",
+            "availability": f"{5}/{7}",
             "description": "'How to Center a Div' is a comprehensive guide for \
             web developers and designers seeking to perfect the art of centering \
             div elements on a webpage. This book offers clear and concise explanations \
-            of different techniques for achieving perfect div centering, including CSS \
-            properties such as margin, padding, display, and position. Additionally, \
-            readers will learn how to use different types of layouts, such as flexbox \
-            and grid, to create responsive and dynamic centering solutions."
+            of different techniques for achieving perfect div centering, including CSS"
         }]
