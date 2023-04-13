@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY") or ""
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["20.123.65.125"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -65,7 +65,8 @@ ROOT_URLCONF = 'lainakoodarit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # adds the templates directory to be found at the root directory
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

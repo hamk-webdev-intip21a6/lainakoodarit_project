@@ -4,8 +4,10 @@
     <title>{% block title %}{% endblock %}</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!-- <link href="css/style.css" rel="stylesheet"/> -->
+    <!-- tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"/>
     {% load static %}
     <script src="{% static 'js/products.js' %}" defer></script>
     <script src="{% static 'js/carousel.js' %}" defer></script>
@@ -31,12 +33,12 @@
     </div>
 
     <footer class="bg-red-400 p-5">
-      <div class="mx-auto max-w-3xl flex gap-x-10 justify-between">
+      <div class="mx-auto max-w-3xl flex gap-x-10 sm:justify-between flex-col gap-y-2 text-center sm:text-start sm:flex-row">
         <p class="font-semibold">&copy; Team Lainakoodarit</p>
-        <div class="flex gap-x-5">
-          <a href="https://github.com/AleksiHel" target="_blank" class="transition-all hover:opacity-50">Aleksi Hellgren</a>
-          <a href="https://github.com/sakuexe" target="_blank" class="transition-all hover:opacity-50">Saku Karttunen</a>
-          <a href="https://github.com/Waisatifi" target="_blank" class="transition-all hover:opacity-50">Wais Atifi</a>
+        <div class="flex flex-wrap gap-y-1 gap-x-5 justify-center">
+          <a href="https://github.com/AleksiHel" target="_blank" class="transition-all hover:opacity-50">Aleksi Hellgren<i class="bi bi-box-arrow-up-right text-xs pl-1"></i></a>
+          <a href="https://github.com/sakuexe" target="_blank" class="transition-all hover:opacity-50">Saku Karttunen<i class="bi bi-box-arrow-up-right text-xs pl-1"></i></a>
+          <a href="https://github.com/Waisatifi" target="_blank" class="transition-all hover:opacity-50">Wais Atifi<i class="bi bi-box-arrow-up-right text-xs pl-1"></i></a>
         </div>
       </div>
     </footer>

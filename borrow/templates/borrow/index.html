@@ -1,21 +1,22 @@
-{% extends "./base.html" %}
+{% extends "base.html" %}
+{% block title %}Borrow System{% endblock %}
 {% block content %}
 <main class="grid md:grid-flow-col grid-cols-5 gap-x-5 px-5 max-w-[1200px] mx-auto">
   <!-- search form -->
   <form action="" class="col-span-6 md:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
     {% csrf_token %}
     <div class="flex flex-col">
-      <label for="seach_name">Search name</label>
-      <input type="text" name="search_name" id="search_name"
+      <label for="search_name">Search name</label>
+      <input type="text" name="search_name" id="search_name" autofocus
       class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
     </div>
     <div class="flex flex-col">
-      <label for="seach_year">Search year</label>
+      <label for="search_year">Search year</label>
       <input type="text" name="search_year" id="search_year"
       class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
     </div>
     <div class="flex flex-col">
-      <label for="seach_author">Search author</label>
+      <label for="search_author">Search author</label>
       <input type="text" name="search_author" id="search_author"
       class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
     </div>
