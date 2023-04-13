@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Product page</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- <link href="css/style.css" rel="stylesheet"/> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <script src="{% static 'js/products.js' %}" defer></script>
+  </head>
+
+  <body class="bg-neutral-100">
+    <div class="w-full max-w-[1000px] mx-auto">
+      <nav class="flex justify-between p-5">
+        <div class="flex gap-x-2 justify-center items-end">
+          <a href="{% url 'borrow:index' %}" class="text-center text-xl font-bold">Borrow System</a>
+          <p class="text-center opacity-75 hidden sm:block">| Lainakoodarit</p>
+        </div>
+        <ul class="flex gap-x-5">
+          <li>Books</li>
+          <li>Music</li>
+          <li>Movies</li>
+        </ul>
+      </nav>
+    </div>
+
+    <article class="max-w-[1200px] mx-auto">
+      {% for prod in product %}
+      <!-- product category in the database -->
+      <p class="my-2 mx-5 xl:mx-0">
+        <a href="">{{ prod.category }}</a> &gt; <a href="">{{prod.genre}}</a>
+      </p>
+      <div class="grid md:grid-cols-4 gap-y-8">
+        <div class="md:col-span-2 bg-neutral-400">
+          {% load static %}
+          <!-- Product image -->
+          <div class="img-container w-full h-full overflow-hidden relative">
+            <img src="{% static prod.thumbnail %}" alt="product image" width="300" height="200"
+              class="object-cover h-full w-full transition-all hover:scale-110"/>
+          </div>
+        </div>
+        <!-- product info -->
+        <div class="px-10 md:col-span-2">
+          <div class="product-card shadow-lg border-red-400 h-full rounded-lg p-4
+            flex flex-col gap-y-5">
+            <div class="prouct-header">
+              <h1 class="text-2xl font-bold">{{ prod.title }}</h1>
+              <p class="opacity-50 font-semibold">{{prod.category}}</p>
+            </div>
+            <!-- <hr class="my-5 border-neutral-300"/> -->
+            <!-- creator info -->
+            <div class="product-creator flex items-center gap-x-5">
+              <h2 class="font-semibold">Author:</h2>
+              <h2>{{ prod.author }}</h2>
+            </div>
+            <button class="bg-red-400 py-2 px-4 rounded-lg text-neutral-100 font-semibold 
+              transition-all hover:brightness-90">Loan this</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </article>
+
+    <!-- description -->
+    <article class="max-w-[1000px] mx-auto my-10 px-5 sm:px-10">
+      {% for prod in product %}
+      <h3 class="font-semibold text-center">Description</h3>
+      <p id="description" class="line-clamp-3 my-2 inline">{{ prod.description }}</p>
+      <hr id="description_line" class="my-5 border-neutral-300"/>
+      <button id="readmore" class="underline block mx-auto">Read more</button>
+      {% endfor %}
+    </article>
+
+    <!-- additional information -->
+    <section class="max-w-[700px] mx-auto my-8 px-5">
+      {% for prod in product %}
+      <h3 class="font-semibold text-center mb-5">Additional information</h3>
+      <div class="grid mx-auto gap-y-6 gap-x-5 sm:grid-cols-2">
+        {% if prod.date_added %}
+        <div class="flex flex-col gap-x-2 items-center">
+          <!-- icon -->
+          <div class="text-center">
+            <h4 class="mb-2 font-semibold">Date added</h4>
+            <img src="{% static 'icons/date_added.svg' %}" alt="tags -icon" width="30" height="30"
+            class="mx-auto"/>
+          </div>
+          <!-- content -->
+          <div class="flex gap-x-5">
+            <p class="justify-center">
+              {{ prod.date_added }}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+        {% if prod.tags %}
+        <div class="flex flex-col gap-x-2 justify-evenly items-center">
+          <!-- icon -->
+          <div class="text-center">
+            <h4 class="mb-2 font-semibold">Tags</h4>
+            <img src="{% static 'icons/tag.svg' %}" alt="tags -icon" width="30" height="30"
+            class="mx-auto"/>
+          </div>
+          <!-- content -->
+          <div class="flex gap-x-5">
+            <p class="justify-center">
+              {{ prod.tags|join:", " }}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+        {% if prod.language %}
+        <div class="flex flex-col gap-x-2 justify-evenly items-center">
+          <!-- icon -->
+          <div class="text-center">
+            <h4 class="mb-2 font-semibold">Language</h4>
+            <img src="{% static 'icons/language.svg' %}" alt="tags -icon" width="30" height="30"
+            class="mx-auto"/>
+          </div>
+          <!-- content -->
+          <div class="flex gap-x-5">
+            <p class="justify-center">
+              {{ prod.language }}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+        {% if prod.language %}
+        <div class="flex flex-col gap-x-2 justify-evenly items-center">
+          <!-- icon -->
+          <div class="text-center">
+            <h4 class="mb-2 font-semibold">Availability</h4>
+            <img src="{% static 'icons/storage.svg' %}" alt="tags -icon" width="30" height="30"
+            class="mx-auto"/>
+          </div>
+          <!-- content -->
+          <div class="flex gap-x-5">
+            <p class="justify-center">
+              {{ prod.availability }}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </section>
+
+    <!-- press to loan -->
+    <section class="max-w-[700px] mx-auto my-20">
+    </section>
+  </body>
+</html>
