@@ -36,7 +36,7 @@ class Author(models.Model):
         ordering = ["author_name"]
 
     def __str__(self):
-        return self.name
+        return self.author_name
 
 class User(models.Model):
     username = models.CharField(max_length=20)
@@ -48,10 +48,10 @@ class User(models.Model):
     phone_number = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
-        ordering = ["real_name"]
+        ordering = ["username"]
 
     def __str__(self):
-        return self.name
+        return self.username
 
 class Event(models.Model):
   # constants 
@@ -82,4 +82,4 @@ class Event(models.Model):
         ordering = ["last_update"]
 
     def __str__(self):
-        return self.name
+        return self.user_id, self.product_id, self.last_update
