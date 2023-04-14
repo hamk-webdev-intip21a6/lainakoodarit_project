@@ -12,7 +12,7 @@ class Product(models.Model):
     descrtiption = models.CharField(max_length=250)
     release_date = models.DateField(default=datetime.date.today)
     loaned_amount = models.SmallIntegerField(default=0)
-    author = models.ManyToManyField(Author)
+    author = models.ManyToManyField("Author")
     # NULLABLE fields - can be left empty
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
@@ -28,11 +28,11 @@ class Product(models.Model):
         return self.name
 
 class Author(models.Model):
-    works = models.ManyToManyField(Product) 
+    works = models.ManyToManyField("Product", related_name='authors') 
     author_name = models.CharField(max_length = 50)
     home_country = models.CharField(max_length=60, blank=True, null=True)
 
-    class Meta(models.Model):
+    class Meta:
         ordering = ["author_name"]
 
     def __str__(self):
@@ -43,11 +43,11 @@ class User(models.Model):
     #Hashing is not done here as we remember
     password = models.CharField(max_length=25)
     real_name = models.CharField(max_length=50)
-    is_active = models.booleanField()
+    is_active = models.BooleanField()
     email = models.CharField(max_length=50, blank=True, null=True)
     phone_number = models.CharField(max_length=30, blank=True, null=True)
 
-    class Meta(models.Model):
+    class Meta:
         ordering = ["real_name"]
 
     def __str__(self):
@@ -75,10 +75,10 @@ class Event(models.Model):
     user_id = models.SmallIntegerField()
     product_id = models.SmallIntegerField()
     loaned_date = models.DateField(default=datetime.date.today)
-    is_returned = models.booleanField()
-    last_update = models.DateField(default=datetime.date.today)
+    is_returned = models.BooleanField()
+    last_update = models.CharField(default=datetime.datetime.now, editable=False, max_length=30)
 
-    class Meta(models.Model):
+    class Meta:
         ordering = ["last_update"]
 
     def __str__(self):
