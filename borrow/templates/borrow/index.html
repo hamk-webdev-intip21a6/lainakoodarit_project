@@ -52,7 +52,7 @@
     <li class="select-none">
       {% load static %}
       <div class="aspect-square w-[200px] overflow-hidden relative group">
-        <img src="{% static listing.thumbnail %}" alt="{{ listing.title }} - thumbnail" width="300" height="300"
+        <img src="{% static listing.thumbnail_path %}" alt="{{ listing.title }} - thumbnail" width="300" height="300"
           draggable="false"
         class="object-cover aspect-square transition-all group-hover:scale-110"/>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#404040AA] w-full text-neutral-100 truncate

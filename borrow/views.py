@@ -3,8 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse
-
-# Create your views here.
+from .models import Product
 
 
 class IndexView(generic.ListView):
@@ -13,46 +12,17 @@ class IndexView(generic.ListView):
     context_object_name = 'listings'
 
     def get_queryset(self):
-        """Return the last five published questions."""
-
-        # return Question.objects.order_by('-pub_date')[:5]
-        return [{
-            "title": "The Thoughts of Petri - an autobiography",
-            "author": "Petri Kuittinen",
-            "genre": "Autobiography",
-            "thumbnail": "imgs/placeholder-book-1.jpg"
-        },
-            {
-            "title": "Python 101 for JavaScript developers",
-            "author": "Dr. Clause Guard",
-            "genre": "Education",
-            "thumbnail": "imgs/placeholder-book-2.jpg"
-        },
-            {
-            "title": "Epic adventures of a man",
-            "author": "Mark Fischbac",
-            "genre": "Fantasy",
-            "thumbnail": "imgs/placeholder-book-3.jpg"
-        },
-            {
-            "title": "To ; or not to ;",
-            "author": "reddit.com",
-            "genre": "Humor",
-            "thumbnail": "imgs/placeholder-book-4.jpg"
-        },
-            {
-            "title": "How do I center a div?",
-            "author": "sakuk",
-            "genre": "Documentation",
-            "thumbnail": "imgs/placeholder-book-5.jpg"
-        }]
+        """ Return the five most recent objects in the product category """
+        # for example     v
+        return Product.objects.order_by('-release_date')[:5]
 
 
 # TODO: change to inherit detailview instead of listview
+# when the models for the product are up and running
 class ProductView(generic.ListView):
     template_name = 'borrow/product_page.html'
     # TODO: change this to a database object when database is ready
-    # model = Product
+    model = Product
     context_object_name = 'product'
 
     def get_queryset(self):
@@ -72,3 +42,10 @@ class ProductView(generic.ListView):
             div elements on a webpage. This book offers clear and concise explanations \
             of different techniques for achieving perfect div centering, including CSS"
         }]
+
+
+class ProductListView(generic.ListView):
+    template_name = 'borrow/product_list.html'
+    context_object_name = 'listings'
+    model = Product
+    queryset = Product.objects.order_by('-release_date')
