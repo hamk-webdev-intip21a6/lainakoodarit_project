@@ -82,4 +82,4 @@ class Event(models.Model):
         ordering = ["last_update"]
 
     def __str__(self):
-        return self.user_id, self.product_id, self.last_update
+        return f'self.user_id, self.product_id, self.last_update'
