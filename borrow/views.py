@@ -14,7 +14,7 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """ Return the five most recent objects in the product category """
         # for example     v
-        return Product.objects.order_by('-release_date')[:5]
+        return Product.objects.order_by('-release_date')[:6]
 
 
 class ProductView(generic.DetailView):
