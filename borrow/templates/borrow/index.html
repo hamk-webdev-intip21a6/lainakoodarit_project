@@ -47,20 +47,20 @@
 <!-- most recent additions -->
 <section class="max-w-[1200px] mx-auto mt-10 px-5">
   <h3 class="font-semibold mb-2">Recent additions</h3>
-  <ul class="carousel grid grid-flow-col text-center pb-4 overflow-auto gap-x-4">
+  <div class="carousel grid grid-flow-col text-center pb-4 overflow-auto gap-x-4">
     {% for listing in listings %}
-    <li class="select-none">
+    <a href="{% url 'borrow:product' listing.id %}" class="select-none">
       {% load static %}
       <div class="aspect-square w-[200px] overflow-hidden relative group">
-        <img src="{% static listing.thumbnail %}" alt="{{ listing.title }} - thumbnail" width="300" height="300"
+        <img src="{% static listing.thumbnail_path %}" alt="{{ listing.title }} - thumbnail" width="300" height="300"
           draggable="false"
         class="object-cover aspect-square transition-all group-hover:scale-110"/>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#404040AA] w-full text-neutral-100 truncate
           opacity-0 transition-all group-hover:opacity-100">{{ listing.genre }}</p>
       </div>
       <p class="text-sm max-w-[200px] truncate">{{ listing.title }}</p>
-    </li>
+    </a>
     {% endfor %}
-  </ul>
+  </div>
 </section>
 {% endblock %}
