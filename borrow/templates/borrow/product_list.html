@@ -9,10 +9,10 @@
       <p>{{ listings.count }}</p>
     </div>
   </header>
-  <section class="max-w-[1200px] mx-auto px-5">
+  <section class="max-w-[1200px] mx-auto px-5 mb-20">
     <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     {% for listing in listings %}
-      <div class="product-card shadow-md flex flex-col select-none">
+      <a href="{% url 'borrow:product' listing.id %}" class="product-card shadow-md flex flex-col select-none group">
         <div class="product-img overflow-hidden group relative sm:h-5/6">
           {% load static %}
           <img src="{% static listing.thumbnail_path %}" alt="{{ listing.name}} -thumbnail" width="200" height="200" draggable="false"
@@ -21,9 +21,9 @@
             font-semibold text-center opacity-0 transition-all group-hover:opacity-100">{{ listing.genre }}</p>
         </div>
         <div class="product-info px-4 py-2 flex items-center sm:h-2/6">
-          <h3 class="line-clamp-1 sm:line-clamp-2">{{ listing.name }}</h3>
+          <h3 class="line-clamp-1 group-hover:underline sm:line-clamp-2">{{ listing.name }}</h3>
         </div>
-      </div>
+      </a>
     {% endfor %}
     </div>
   </section>

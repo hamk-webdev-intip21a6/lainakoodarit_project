@@ -17,31 +17,23 @@ class IndexView(generic.ListView):
         return Product.objects.order_by('-release_date')[:5]
 
 
-# TODO: change to inherit detailview instead of listview
-# when the models for the product are up and running
-class ProductView(generic.ListView):
-    template_name = 'borrow/product_page.html'
+class ProductView(generic.DetailView):
     # TODO: change this to a database object when database is ready
     model = Product
     context_object_name = 'product'
+    template_name = 'borrow/product_page.html'
 
-    def get_queryset(self):
-        """Return the clicked on product"""
-        return [{
-            "title": "How do I center a div?",
-            "author": "sakuk",
-            "genre": "Documentation",
-            "thumbnail": "imgs/placeholder-book-5.jpg",
-            "category": "Book",
-            "tags": ["cool", "epic", "thought-provoking"],
-            "date_added": "12.2.2023",
-            "language": "English",
-            "availability": f"{5}/{7}",
-            "description": "'How to Center a Div' is a comprehensive guide for \
-            web developers and designers seeking to perfect the art of centering \
-            div elements on a webpage. This book offers clear and concise explanations \
-            of different techniques for achieving perfect div centering, including CSS"
-        }]
+    def get_context_data(self, **kwargs):
+        """Calculate the amount of copies available and add to the view context"""
+        context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        # calculate the amount of available copies
+        available = product.amount - product.loaned_amount
+        # add the value to be available in the context
+        # use {{ available }} to use it
+        context['available'] = available
+        # context['available'] = 0
+        return context
 
 
 class ProductListView(generic.ListView):
