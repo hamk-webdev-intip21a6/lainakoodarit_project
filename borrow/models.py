@@ -75,11 +75,13 @@ class Event(models.Model):
     user_id = models.SmallIntegerField()
     product_id = models.SmallIntegerField()
     loaned_date = models.DateField(default=datetime.date.today)
-    is_returned = models.BooleanField()
-    last_update = models.CharField(default=datetime.datetime.now, editable=False, max_length=30)
+    is_returned = models.BooleanField(default=False)
+
+    current_time = datetime.datetime.now()
+    last_update = models.CharField(default=current_time.strftime("%Y/%m/%d %H:%M:%S"), editable=False, max_length=30)
 
     class Meta:
         ordering = ["last_update"]
 
     def __str__(self):
-        return f'self.user_id, self.product_id, self.last_update'
+        return f'event: {self.state}, user_id: {self.user_id}, last update: {self.last_update}'
