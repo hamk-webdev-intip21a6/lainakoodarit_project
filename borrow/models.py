@@ -1,8 +1,17 @@
 from django.db import models
 import datetime
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
+class Author(models.Model):
+    author_name = models.CharField(max_length=50)
+    home_country = models.CharField(max_length=60, blank=True, null=True)
+
+    class Meta:
+        ordering = ["author_name"]
+
+    def __str__(self):
+        return self.author_name
 
 class Product(models.Model):
     # NON NULLABLE values - must be filled
@@ -12,7 +21,7 @@ class Product(models.Model):
     descrtiption = models.CharField(max_length=250)
     release_date = models.DateField(default=datetime.date.today)
     loaned_amount = models.SmallIntegerField(default=0)
-    author = models.ManyToManyField("Author")
+    author = models.ManyToManyField(Author)
     # NULLABLE fields - can be left empty
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
@@ -27,31 +36,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-class Author(models.Model):
-    works = models.ManyToManyField("Product", related_name='authors') 
-    author_name = models.CharField(max_length = 50)
-    home_country = models.CharField(max_length=60, blank=True, null=True)
 
-    class Meta:
-        ordering = ["author_name"]
-
-    def __str__(self):
-        return self.author_name
-
-class User(models.Model):
-    username = models.CharField(max_length=20)
-    #Hashing is not done here as we remember
-    password = models.CharField(max_length=25)
-    real_name = models.CharField(max_length=50)
-    is_active = models.BooleanField()
-    email = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=30, blank=True, null=True)
-
-    class Meta:
-        ordering = ["username"]
-
-    def __str__(self):
-        return self.username
 
 class Event(models.Model):
   # constants 
