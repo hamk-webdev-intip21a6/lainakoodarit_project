@@ -18,8 +18,9 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     genre = models.CharField(max_length=30)
     amount = models.SmallIntegerField(default=0)
-    descrtiption = models.CharField(max_length=250)
-    release_date = models.DateField(default=datetime.date.today)
+    description = models.TextField(
+        max_length=750, default="description not available")
+    date_added = models.DateField(default=datetime.date.today)
     loaned_amount = models.SmallIntegerField(default=0)
     author = models.ManyToManyField(Author)
     # NULLABLE fields - can be left empty
@@ -37,33 +38,33 @@ class Product(models.Model):
         return self.name
 
 
-
 class Event(models.Model):
-  # constants 
+  # constants
     loaned_state = "Loaned"
     returned_state = "Returned"
     late_state = "Late"
     # first value is what is set as value and latter is the value that is readable
     # might try subclass enum later, lets try this first
     STATE_CHOICES = [
-            (loaned_state, "Loan"),
-            (returned_state, "Return"),
-            (late_state, "Late"),
-            ]
+        (loaned_state, "Loan"),
+        (returned_state, "Return"),
+        (late_state, "Late"),
+    ]
 
     state = models.CharField(
-            max_length=10,
-            choices=STATE_CHOICES,
-            default=loaned_state,
-            )
-    
+        max_length=10,
+        choices=STATE_CHOICES,
+        default=loaned_state,
+    )
+
     user_id = models.SmallIntegerField()
     product_id = models.SmallIntegerField()
     loaned_date = models.DateField(default=datetime.date.today)
     is_returned = models.BooleanField(default=False)
 
     current_time = datetime.datetime.now()
-    last_update = models.CharField(default=current_time.strftime("%Y/%m/%d %H:%M:%S"), editable=False, max_length=30)
+    last_update = models.CharField(default=current_time.strftime(
+        "%Y/%m/%d %H:%M:%S"), editable=False, max_length=30)
 
     class Meta:
         ordering = ["last_update"]
