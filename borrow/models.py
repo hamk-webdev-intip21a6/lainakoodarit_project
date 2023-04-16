@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
+
 class Author(models.Model):
     author_name = models.CharField(max_length=50)
     home_country = models.CharField(max_length=60, blank=True, null=True)
@@ -12,6 +13,7 @@ class Author(models.Model):
 
     def __str__(self):
         return self.author_name
+
 
 class Product(models.Model):
     # NON NULLABLE values - must be filled
@@ -23,6 +25,7 @@ class Product(models.Model):
     date_added = models.DateField(default=datetime.date.today)
     loaned_amount = models.SmallIntegerField(default=0)
     author = models.ManyToManyField(Author)
+    category = models.CharField(max_length=30)
     # NULLABLE fields - can be left empty
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
