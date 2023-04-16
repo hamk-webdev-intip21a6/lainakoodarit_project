@@ -39,4 +39,12 @@ class ProductListView(generic.ListView):
     template_name = 'borrow/product_list.html'
     context_object_name = 'listings'
     model = Product
-    queryset = Product.objects.order_by('-date_added')
+
+    def get_queryset(self):
+        """Check if the template passed a GET query.
+        If so, use the keyword value to filter the database query"""
+        queryset = Product.objects
+        category_filter = self.request.GET.get('category')
+        if category_filter:
+            queryset = queryset.filter(category=category_filter)
+        return queryset.order_by('-date_added')

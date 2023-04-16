@@ -20,10 +20,14 @@
       </div>
       <ul class="flex gap-x-5">
         <li>
-          <a href="{% url 'borrow:list' %}">Books</a>
+          <a href="{% url 'borrow:list' %}?category=Book">Books</a>
         </li>
-        <li>Music</li>
-        <li>Movies</li>
+        <li>
+          <a href="{% url 'borrow:list' %}?category=Music">Music</a>
+        </li>
+        <li>
+          <a href="{% url 'borrow:list' %}?category=Movie">Movies</a>
+        </li>
       </ul>
     </nav>
 
