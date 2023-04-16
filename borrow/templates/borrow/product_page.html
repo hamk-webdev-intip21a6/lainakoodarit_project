@@ -9,12 +9,21 @@
   <div class="grid md:grid-cols-4 gap-y-8">
     <div class="md:col-span-2 bg-neutral-400">
       {% load static %}
+
       <!-- Product image -->
-      <div class="img-container w-full h-full overflow-hidden relative">
-        <img src="{% static product.thumbnail_path %}" alt="product image" width="300" height="200"
-          class="object-cover h-full w-full transition-all hover:scale-110"/>
+      <div class="img-container w-full aspect-[4/3] overflow-hidden relative group">
+        <a href="{% static product.thumbnail_path %}">
+          <img src="{% static product.thumbnail_path %}" alt="product image" width="300" height="200"
+            class="object-cover h-full w-full transition-all hover:scale-110"/>
+        </a>
+        <p class="absolute bottom-0 right-1/2 translate-x-1/2 
+          py-3 px-4 w-full text-white text-center bg-[#40404055] transition-all opacity-0
+          group-hover:underline group-hover:opacity-100">
+          View full image
+        </p>
       </div>
     </div>
+
     <!-- product info -->
     <div class="px-10 flex items-center md:col-span-2">
       <div class="product-card shadow-lg w-full rounded-lg p-4
