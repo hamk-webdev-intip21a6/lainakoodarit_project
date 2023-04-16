@@ -4,7 +4,7 @@
 <article class="max-w-[1200px] mx-auto">
   <!-- product category in the database -->
   <p class="my-2 mx-5 xl:mx-0">
-    <a href="">{{ product.category }}</a> &gt; <a href="">{{product.genre}}</a>
+    <a href="{% url 'borrow:list' %}?category={{ product.category }}">{{ product.category }}</a> &gt; <a href="">{{product.genre}}</a>
   </p>
   <div class="grid md:grid-cols-4 gap-y-8">
     <div class="md:col-span-2 bg-neutral-400">
