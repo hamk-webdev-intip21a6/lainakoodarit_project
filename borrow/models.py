@@ -1,7 +1,5 @@
 from django.db import models
 import datetime
-from django.contrib.auth.models import AbstractUser
-# Create your models here.
 
 
 class Author(models.Model):
@@ -19,19 +17,18 @@ class Product(models.Model):
     # NON NULLABLE values - must be filled
     name = models.CharField(max_length=50)
     genre = models.CharField(max_length=30)
-    amount = models.SmallIntegerField(default=0)
     description = models.TextField(
         max_length=750, default="description not available")
-    date_added = models.DateField(default=datetime.date.today)
-    loaned_amount = models.SmallIntegerField(default=0)
+    date_added = models.DateField(auto_now_add=True)
     author = models.ManyToManyField(Author)
     category = models.CharField(max_length=30)
+    amount = models.SmallIntegerField(default=0)
+    loaned_amount = models.SmallIntegerField(default=0)
     # NULLABLE fields - can be left empty
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
     # we could use a randomly chosen thumbnail for if there is no image provided
     thumbnail_path = models.CharField(max_length=50)
-    # category
     # purchase_event
 
     class Meta:
@@ -42,32 +39,33 @@ class Product(models.Model):
 
 
 class Event(models.Model):
-  # constants
-    loaned_state = "Loaned"
-    returned_state = "Returned"
-    late_state = "Late"
+    # constants
+    LOANED_STATE = "Loaned"
+    RETURNED_STATE = "Returned"
+    LATE_STATE = "Late"
     # first value is what is set as value and latter is the value that is readable
     # might try subclass enum later, lets try this first
     STATE_CHOICES = [
-        (loaned_state, "Loan"),
-        (returned_state, "Return"),
-        (late_state, "Late"),
+        (LOANED_STATE, "Loan"),
+        (RETURNED_STATE, "Return"),
+        (LATE_STATE, "Late"),
     ]
 
     state = models.CharField(
         max_length=10,
         choices=STATE_CHOICES,
-        default=loaned_state,
+        default=LOANED_STATE,
     )
 
+    # TODO: the same system as in
     user_id = models.SmallIntegerField()
     product_id = models.SmallIntegerField()
-    loaned_date = models.DateField(default=datetime.date.today)
+    loaned_date = models.DateField(auto_now_add=True)
     is_returned = models.BooleanField(default=False)
 
     current_time = datetime.datetime.now()
-    last_update = models.CharField(default=current_time.strftime(
-        "%Y/%m/%d %H:%M:%S"), editable=False, max_length=30)
+    # updates the value when model is saved
+    last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["last_update"]

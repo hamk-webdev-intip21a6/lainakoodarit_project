@@ -21,11 +21,11 @@ class ProductAdminForm(forms.ModelForm):
         exclude = ('author',)
 
 
-class AdminProduct(admin.ModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     inlines = [BarInline,]
     list_display = ('name', 'short_description', 'genre',
-                    'date_added', 'loaned_amount')
+                    'date_added', 'availability', 'is_available')
     search_fields = ('description', 'name')
     list_filter = ('date_added', 'author')
 
@@ -36,9 +36,25 @@ class AdminProduct(admin.ModelAdmin):
             return (obj.description[:CHAR_LIMIT] + '...')
         return obj.description
 
+    def is_available(self, obj):
+        return bool(obj.amount - obj.loaned_amount)
+
+    def availability(self, obj: Product):
+        return f"{obj.loaned_amount}/{obj.amount}"
+
+    # make the availability show up as a checkmark instead of text
+    is_available.boolean = True
+
     short_description.short_description = 'Description'
+    is_available.short_description = ''
 
 
-admin.site.register(Product, AdminProduct)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'product_id', 'state',
+                    'loaned_date', 'last_update')
+    list_filter = ('state',)
+
+
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Author, AuthorAdmin)
-admin.site.register(Event)
+admin.site.register(Event, EventAdmin)
