@@ -15,11 +15,16 @@
       <a href="{% url 'borrow:product' listing.id %}" draggable="false"
         class="product-card shadow-md flex flex-col select-none group">
         <div class="product-img overflow-hidden group relative sm:h-5/6">
+          {% if listing.image %}
+            <img src="{{ listing.image.url }}" alt="{{ listing.name}} -thumbnail" width="199" height="200" draggable="false"
+              class="object-cover w-full h-full transition-all group-hover:scale-111"/>
+          {% else %}
           {% load static %}
-          <img src="{% static listing.thumbnail_path %}" alt="{{ listing.name}} -thumbnail" width="200" height="200" draggable="false"
-          class="object-cover w-full h-full transition-all group-hover:scale-110"/>
-          <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] text-white w-full
-            font-semibold text-center opacity-0 transition-all group-hover:opacity-100">{{ listing.genre }}</p>
+            <img src="{% static listing.image %}" alt="{{ listing.name}} -thumbnail" width="199" height="200" draggable="false"
+              class="object-cover w-full h-full transition-all group-hover:scale-111"/>
+          {% endif %}
+            <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] text-white w-full
+              font-semibold text-center opacity-0 transition-all group-hover:opacity-100">{{ listing.genre|title }}</p>
         </div>
         <div class="product-info px-4 py-2 flex items-center sm:h-2/6">
           <h3 class="line-clamp-1 group-hover:underline sm:line-clamp-2">{{ listing.name }}</h3>

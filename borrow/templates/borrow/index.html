@@ -62,7 +62,7 @@
         {% endif %}
         class="object-cover aspect-[4/3] transition-all group-hover:scale-110"/>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] w-full text-neutral-100 truncate
-          opacity-0 transition-all group-hover:opacity-100">{{ listing.genre }}</p>
+          opacity-0 transition-all group-hover:opacity-100">{{ listing.genre|title }}</p>
       </div>
       <p class="text-sm line-clamp-2 py-2 px-3 text-start h-2/6 flex items-center
         transition-all group-hover:underline">{{ listing.name }}</p>
