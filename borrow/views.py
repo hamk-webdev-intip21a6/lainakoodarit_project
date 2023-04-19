@@ -4,23 +4,12 @@ from .models import Product
 from random import randint
 
 
-def random_default_thumbnail(context, is_list: bool = True):
+def random_default_thumbnail(category: str) -> str:
     """Get a random image for a product, if product doesn't have one already.
     @param context, is_list"""
-    # randomize a number from 1 to 5
     # if context for DetailView is wanted
-    if not is_list:
-        random_num = randint(1, 5)
-        if not context['object'].image:
-            context['object'].image = f"defaults/placeholder-{context['object'].category}-{random_num}.jpg"
-        return context
-
-    # if ListView is wanted
-    for obj in context['object_list']:
-        random_num = randint(1, 5)
-        if not obj.image:
-            obj.image = f"defaults/placeholder-{obj.category}-{random_num}.jpg"
-    return context
+    random_num = randint(1, 5)
+    return f"defaults/placeholder-{category}-{random_num}.jpg"
 
 
 class IndexView(generic.ListView):
@@ -31,7 +20,9 @@ class IndexView(generic.ListView):
     def get_context_data(self, **kwargs):
         # get the context
         context = super().get_context_data(**kwargs)
-        context = random_default_thumbnail(context)
+        for obj in context['object_list']:
+            if not obj.image:
+                obj.image = random_default_thumbnail(obj.category)
         return context
 
     def get_queryset(self):
@@ -49,14 +40,22 @@ class ProductView(generic.DetailView):
         """Calculate the amount of copies available and add to the view context"""
         context = super().get_context_data(**kwargs)
         # get a default image for product, if image does not exist
-        random_default_thumbnail(context, is_list=False)
+        if not context['object'].image:
+            context['object'].image = random_default_thumbnail(
+                context['object'].category)
         product = self.get_object()
         # calculate the amount of available copies
         available = product.amount - product.loaned_amount
         # add the value to be available in the context
         # use {{ available }} to use it
         context['available'] = available
-        # context['available'] = 0
+        # also add a list of 5 most recent products of the same category
+        current_category = context['object'].category
+        context['recent_additions'] = Product.objects.filter(
+            category=current_category)[:5]
+        for obj in context['recent_additions']:
+            if not obj.image:
+                obj.image = random_default_thumbnail(obj.category)
         return context
 
 
@@ -68,7 +67,9 @@ class ProductListView(generic.ListView):
     def get_context_data(self, **kwargs):
         # get the context
         context = super().get_context_data(**kwargs)
-        context = random_default_thumbnail(context)
+        for obj in context['object_list']:
+            if not obj.image:
+                obj.image = random_default_thumbnail(obj.category)
         return context
 
     def get_queryset(self):
