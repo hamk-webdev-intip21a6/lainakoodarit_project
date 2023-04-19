@@ -12,9 +12,14 @@
 
       <!-- Product image -->
       <div class="img-container w-full aspect-[4/3] overflow-hidden relative group">
-        <a href="{% static product.thumbnail_path %}">
-          <img src="{% static product.thumbnail_path %}" alt="product image" width="300" height="200"
+        <a href="{{ product.image.url }}">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="product image" width="300" height="200"
             class="object-cover h-full w-full transition-all hover:scale-110"/>
+          {% else %}
+          <img src="{% static product.image %}" alt="product image" width="300" height="200"
+            class="object-cover h-full w-full transition-all hover:scale-110"/>
+          {% endif %}
         </a>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 
           py-3 px-4 w-full text-white text-center bg-[#40404055] transition-all opacity-0

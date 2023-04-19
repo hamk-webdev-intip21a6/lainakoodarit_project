@@ -28,7 +28,8 @@ class Product(models.Model):
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
     # we could use a randomly chosen thumbnail for if there is no image provided
-    thumbnail_path = models.CharField(max_length=50)
+    image = models.FileField(
+        upload_to="images/", blank=True, null=True)
     # purchase_event
 
     class Meta:
