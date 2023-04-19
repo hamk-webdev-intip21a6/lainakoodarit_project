@@ -2,5 +2,6 @@ asgiref==3.6.0
 backports.zoneinfo==0.2.1
 Django==4.1.7
 django-browser-reload==1.7.0
+Pillow==9.5.0
 python-dotenv==1.0.0
 sqlparse==0.4.3
