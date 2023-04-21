@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from .image_process import save_thumbnail
 
 
 class Author(models.Model):
@@ -28,8 +29,10 @@ class Product(models.Model):
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)
     # we could use a randomly chosen thumbnail for if there is no image provided
-    image = models.FileField(
+    image = models.ImageField(
         upload_to="images/", blank=True, null=True)
+    thumbnail = models.CharField(
+        max_length=75, blank=True, null=True, editable=False)
     # purchase_event
 
     class Meta:
@@ -37,6 +40,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        """Save a thumbail for the product that is smaller and faster to load"""
+        super().save(*args, **kwargs)
+        if self.image:
+            thumb_path = save_thumbnail(self.image.path, self.image.name)
+            self.thumbnail = thumb_path
+            super().save(*args, **kwargs)
 
 
 class Event(models.Model):
