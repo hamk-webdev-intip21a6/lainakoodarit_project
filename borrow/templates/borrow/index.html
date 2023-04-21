@@ -52,12 +52,12 @@
     <a href="{% url 'borrow:product' listing.id %}" draggable="false"
       class="select-none shadow-md w-[200px] aspect-square group transition-all hover:shadow-lg">
       <div class="overflow-hidden relative group">
-        {% if listing.image %}
-          <img src="{{ listing.image.url }}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
+        {% if listing.thumbnail %}
+          <img src="{{ listing.thumbnail }}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
             draggable="false"
         {% else %}
           {% load static %}
-          <img src="{% static listing.image %}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
+          <img src="{{ listing.image.url }}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
               draggable="false"
         {% endif %}
         class="object-cover aspect-[4/3] transition-all group-hover:scale-110"/>
