@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block content %}
+
+    {% csrf_token %}
+    <h1>{{ user.username }}'s Profile</h1>
+    
+
+{% endblock %}
