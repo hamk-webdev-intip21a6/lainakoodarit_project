@@ -50,9 +50,13 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'product_id', 'state',
-                    'loaned_date', 'last_update')
-    list_filter = ('state',)
+    list_display = ('user', 'product', 'loaned_date',
+                    'last_update', 'is_returned')
+
+    def is_returned(self, obj):
+        return bool(obj.return_date)
+
+    is_returned.boolean = True
 
 
 admin.site.register(Product, ProductAdmin)

@@ -1,7 +1,8 @@
 # Create your views here.
 from django.views import generic
-from .models import Product
-from random import randint
+from .models import Product, Event
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 
 class IndexView(generic.ListView):
@@ -56,3 +57,12 @@ class ProductListView(generic.ListView):
             queryset = queryset.filter(category=category_filter)
         # at the end, return the queryset with the filters added
         return queryset.order_by('-date_added')
+
+
+@login_required
+def create_loan(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    event = Event.objects.create(user=request.user, product=product)
+    event.save()
+    # others
+    return redirect('borrow:product', pk=product.pk)

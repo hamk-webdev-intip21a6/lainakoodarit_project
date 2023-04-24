@@ -6,15 +6,13 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Add any additional fields you'd like for the user profile
 
     def __str__(self):
         return self.user.username
-    
+
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -23,7 +21,6 @@ class UserProfile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.userprofile.save()
-    
 
 
 class Author(models.Model):
@@ -74,31 +71,13 @@ class Product(models.Model):
 
 
 class Event(models.Model):
-    # constants
-    LOANED_STATE = "Loaned"
-    RETURNED_STATE = "Returned"
-    LATE_STATE = "Late"
-    # first value is what is set as value and latter is the value that is readable
-    # might try subclass enum later, lets try this first
-    STATE_CHOICES = [
-        (LOANED_STATE, "Loan"),
-        (RETURNED_STATE, "Return"),
-        (LATE_STATE, "Late"),
-    ]
-
-    state = models.CharField(
-        max_length=10,
-        choices=STATE_CHOICES,
-        default=LOANED_STATE,
-    )
-
     # TODO: the same system as in
-    user_id = models.SmallIntegerField()
-    product_id = models.SmallIntegerField()
+    user = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, default=None)
+    product = models.ForeignKey(
+        to=Product, on_delete=models.CASCADE, default=None)
     loaned_date = models.DateField(auto_now_add=True)
-    is_returned = models.BooleanField(default=False)
-
-    current_time = datetime.datetime.now()
+    return_date = models.DateField(blank=True, null=True, editable=False)
     # updates the value when model is saved
     last_update = models.DateTimeField(auto_now=True)
 
@@ -106,4 +85,4 @@ class Event(models.Model):
         ordering = ["last_update"]
 
     def __str__(self):
-        return f'event: {self.state}, user_id: {self.user_id}, last update: {self.last_update}'
+        return f'event: user_id: {self.user}, last update: {self.last_update}'

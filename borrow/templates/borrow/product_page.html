@@ -55,8 +55,11 @@
           </p>
         </div>
         {% if available %}
-        <button class="bg-red-400 py-2 px-4 rounded text-white font-semibold 
-          transition-all hover:text-neutral-900 active:scale-90">Loan this</button>
+        <form method="post" action="{% url 'borrow:loan' pk=product.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="bg-red-400 py-2 px-4 w-full rounded text-white font-semibold 
+            transition-all hover:text-neutral-900 active:scale-90">Loan this</button>
+        </form>
         {% else %}
         <button class="bg-black py-2 px-4 rounded text-neutral-100 font-semibold opacity-50
           transition-all">Unavailable</button>
