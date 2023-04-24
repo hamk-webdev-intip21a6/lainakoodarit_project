@@ -9,25 +9,30 @@
     </a>
   </p>
   <div class="grid md:grid-cols-4 gap-y-8">
-    <div class="md:col-span-2 bg-neutral-400">
+    <div class="md:col-span-2">
       {% load static %}
 
       <!-- Product image -->
       <div class="img-container w-full aspect-[4/3] overflow-hidden relative group">
+        {% if product.image %}
         <a href="{{ product.image.url }}">
-          {% if product.image %}
           <img src="{{ product.image.url }}" alt="product image" width="300" height="200"
             class="object-cover h-full w-full transition-all hover:scale-110"/>
-          {% else %}
-          <img src="{% static product.image %}" alt="product image" width="300" height="200"
-            class="object-cover h-full w-full transition-all hover:scale-110"/>
-          {% endif %}
         </a>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 
           py-3 px-4 w-full text-white text-center bg-[#40404055] transition-all opacity-0
           group-hover:underline group-hover:opacity-100">
           View full image
         </p>
+        {% else %}
+        <!-- if no image is found -->
+        <div class="object-cover h-full w-full flex flex-col justify-center bg-neutral-200
+          opacity-50 transition-all hover:scale-110">
+          <img src="{% static 'icons/default-' %}{{ product.category }}.svg" alt="product image" width="200" height="200"
+            class="w-full h-1/4 motion-safe:animate-bounce"/>
+          <p class="w-full text-center font-semibold select-none">No image provided</p>
+        </div>
+        {% endif %}
       </div>
     </div>
 

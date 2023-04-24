@@ -50,24 +50,31 @@
   <div class="carousel grid grid-flow-col text-center pb-6 overflow-auto gap-x-4">
     {% for listing in listings %}
     <a href="{% url 'borrow:product' listing.id %}" draggable="false"
-      class="select-none shadow-md w-[200px] aspect-square group transition-all hover:shadow-lg">
-      <div class="overflow-hidden relative group">
+      class="select-none shadow-md w-[200px] aspect-square group hover:shadow-lg">
+      <div class="overflow-hidden aspect-square relative group">
         {% if listing.thumbnail %}
-          <img src="{{ listing.thumbnail }}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
-            draggable="false"
+        <!-- if listing has a thumbnail -->
+        <img src="{{ listing.thumbnail }}" alt="{{ listing.title }} -thumbnail" 
+          width="300" height="300" draggable="false"
+          class="object-cover w-full h-full transition-all group-hover:scale-110">
         {% else %}
-          {% load static %}
-          <img src="{{ listing.image.url }}" alt="{{ listing.title }} -thumbnail" width="300" height="300"
-              draggable="false"
+        <!-- if listing doesn't have a thumbnail -->
+        {% load static %}
+        <div class="object-cover w-full h-full flex flex-col justify-center bg-neutral-200
+          opacity-50 transition-all hover:scale-110">
+          <img src="{% static 'icons/default-' %}{{ listing.category }}.svg" alt="{{ listing.title }} -thumbnail" 
+            width="300" height="300" draggable="false"
+            class="w-full h-1/4"/>
+          <p class="font-semibold">Image not provided</p>
+        </div>
         {% endif %}
-        class="object-cover aspect-[4/3] transition-all group-hover:scale-110"/>
+        <!-- listing genre -->
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] w-full text-neutral-100 truncate
           opacity-0 transition-all group-hover:opacity-100">{{ listing.genre|title }}</p>
       </div>
+      <!-- listing title -->
       <p class="text-sm line-clamp-2 py-2 px-3 text-start h-2/6 flex items-center
         transition-all group-hover:underline">{{ listing.name }}</p>
-      <!-- <p>thumb: {{ listing.thumbnail }}</p> -->
-      <!-- <p>image: {{ listing.image.url }}</p> -->
     </a>
     {% endfor %}
   </div>

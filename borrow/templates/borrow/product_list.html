@@ -14,19 +14,26 @@
     {% for listing in listings %}
       <a href="{% url 'borrow:product' listing.id %}" draggable="false"
         class="product-card shadow-md flex flex-col select-none group">
-        <div class="product-img overflow-hidden group relative sm:h-5/6">
+        <!-- product image -->
+        <div class="product-img overflow-hidden aspect-[4/3] sm:aspect-square group relative">
           {% if listing.image %}
-            <img src="{{ listing.image.url }}" alt="{{ listing.name}} -thumbnail" width="199" height="200" draggable="false"
-              class="object-cover w-full h-full transition-all group-hover:scale-111"/>
+            <img src="{{ listing.image.url }}" alt="{{ listing.name}} -thumbnail" width="200" height="200" draggable="false"
+              class="object-cover w-full h-full transition-all group-hover:scale-110"/>
           {% else %}
           {% load static %}
-            <img src="{% static listing.image %}" alt="{{ listing.name}} -thumbnail" width="199" height="200" draggable="false"
-              class="object-cover w-full h-full transition-all group-hover:scale-111"/>
+          <div class="object-cover w-full h-full flex flex-col justify-center bg-neutral-200
+            opacity-50 transition-all group-hover:scale-110">
+            <img src="{% static 'icons/default-' %}{{ listing.category }}.svg" alt="{{ listing.name}} -thumbnail" width="200" height="200" draggable="false"
+              class="w-full h-1/4"/>
+            <p class="text-center font-semibold">No image provided</p>
+          </div>
           {% endif %}
-            <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] text-white w-full
-              font-semibold text-center opacity-0 transition-all group-hover:opacity-100">{{ listing.genre|title }}</p>
+          <!-- product genre -->
+          <p class="absolute bottom-0 right-1/2 translate-x-1/2 py-2 bg-[#40404055] text-white w-full
+            font-semibold text-center opacity-0 transition-all group-hover:opacity-100">{{ listing.genre|title }}</p>
         </div>
-        <div class="product-info px-4 py-2 flex items-center sm:h-2/6">
+        <!-- product title -->
+        <div class="product-title px-4 py-2 flex items-center h-16 sm:h-20">
           <h3 class="line-clamp-1 group-hover:underline sm:line-clamp-2">{{ listing.name }}</h3>
         </div>
       </a>
