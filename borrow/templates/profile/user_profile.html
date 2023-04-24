@@ -2,8 +2,34 @@
 {% block title %}My profile{% endblock %}
 {% block content %}
 
-    {% csrf_token %}
-    <h1>{{ user.username }}'s Profile</h1>
-    
+{% csrf_token %}
+
+<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-xl sm:rounded-lg">
+    <div class="text-center font-bold mb-5">    <h1>{{ user.username }}</h1><h2>Loans</h2></div>
+    <div class="container mx-auto px-2 sm:px-0">
+        <table class=" bg-white rounded-lg shadow-md">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="p-1">Product</th>
+                    <th class="p-1">Loan Date</th>
+                    <th class="p-1">Return Date</th>
+                    <th class="p-1">Additional Information</th>
+                    <th class="p-1">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t border-gray-300">
+                    <td class="p-1">Example Product</td>
+                    <td class="p-1">2023-04-20</td>
+                    <td class="p-1">2023-04-30</td>
+                    <td class="p-1">Some additional information</td>
+                    <td class="p-1">
+                        <button class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
