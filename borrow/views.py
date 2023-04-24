@@ -38,6 +38,7 @@ class ProductView(generic.DetailView):
 
 
 class ProductListView(generic.ListView):
+    """View for the product list page."""
     template_name = 'borrow/product_list.html'
     context_object_name = 'listings'
     model = Product
@@ -46,7 +47,12 @@ class ProductListView(generic.ListView):
         """Check if the template passed a GET query.
         If so, use the keyword variable's value to filter the database query"""
         queryset = Product.objects
+        # if a get request is NOT included in the url, return all of the objects
+        if not self.request.GET:
+            return queryset.order_by('-date_added')
+        # if a get request is included, here is what to do with it
         category_filter = self.request.GET['category']
         if category_filter:
             queryset = queryset.filter(category=category_filter)
+        # at the end, return the queryset with the filters added
         return queryset.order_by('-date_added')
