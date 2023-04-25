@@ -5,7 +5,7 @@
   <!-- product category in the database -->
   <p class="my-2 mx-5 xl:mx-0">
     <a href="{% url 'borrow:list' %}?category={{ product.category }}">
-      {{ product.category|title }}</a> &gt; <a href="">{{ product.genre|title }}
+      {{ product.category|title }}</a> &gt; <a href="{% url 'borrow:list' %}?genre={{ product.genre }}">{{ product.genre|title }}
     </a>
   </p>
   <div class="grid md:grid-cols-4 gap-y-8">
@@ -15,8 +15,9 @@
       <!-- Product image -->
       <div class="img-container w-full aspect-[4/3] overflow-hidden relative group">
         {% if product.image %}
+        <!-- if image is found, show 'image not provided image' -->
         <a href="{{ product.image.url }}">
-          <img src="{{ product.image.url }}" alt="product image" width="300" height="200"
+          <img src="{{ product.image.url }}" alt="product image for {{ product.name }}" width="300" height="200"
             class="object-cover h-full w-full transition-all hover:scale-110"/>
         </a>
         <p class="absolute bottom-0 right-1/2 translate-x-1/2 
@@ -28,7 +29,7 @@
         <!-- if no image is found -->
         <div class="object-cover h-full w-full flex flex-col justify-center bg-neutral-200
           opacity-50 transition-all hover:scale-110">
-          <img src="{% static 'icons/default-' %}{{ product.category }}.svg" alt="product image" width="200" height="200"
+          <img src="{% static 'icons/default-' %}{{ product.category }}.svg" alt="default product image for a {{ product.category }}" width="200" height="200"
             class="w-full h-1/4 motion-safe:animate-bounce"/>
           <p class="w-full text-center font-semibold select-none">No image provided</p>
         </div>
@@ -54,16 +55,22 @@
             {% endfor %}
           </p>
         </div>
-        {% if available %}
+        {% if available and request.user.is_authenticated %}
         <form method="post" action="{% url 'borrow:loan' pk=product.pk %}">
           {% csrf_token %}
           <button type="submit" class="bg-red-400 py-2 px-4 w-full rounded text-white font-semibold 
             transition-all hover:text-neutral-900 active:scale-90">Loan this</button>
         </form>
         {% else %}
-        <button class="bg-black py-2 px-4 rounded text-neutral-100 font-semibold opacity-50
-          transition-all">Unavailable</button>
-        <p class="text-center -translate-y-5">* No copies available currently</p>
+          {% if not request.user.is_authenticated %}
+          <button class="bg-black py-2 px-4 rounded text-neutral-100 font-semibold opacity-50
+            transition-all">Unavailable</button>
+          <p class="text-center -translate-y-5">* Not logged in, loaning unavailable</p>
+          {% else %}
+          <button class="bg-black py-2 px-4 rounded text-neutral-100 font-semibold opacity-50
+            transition-all">Unavailable</button>
+          <p class="text-center -translate-y-5">* No copies available currently</p>
+          {% endif %}
         {% endif %}
       </div>
     </div>

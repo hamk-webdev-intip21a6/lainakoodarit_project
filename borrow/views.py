@@ -42,21 +42,33 @@ class ProductListView(generic.ListView):
     """View for the product list page."""
     template_name = 'borrow/product_list.html'
     context_object_name = 'listings'
+    ordering = '-date_added'
     model = Product
 
     def get_queryset(self):
         """Check if the template passed a GET query.
-        If so, use the keyword variable's value to filter the database query"""
-        queryset = Product.objects
-        # if a get request is NOT included in the url, return all of the objects
-        if not self.request.GET:
-            return queryset.order_by('-date_added')
-        # if a get request is included, here is what to do with it
-        category_filter = self.request.GET['category']
-        if category_filter:
-            queryset = queryset.filter(category=category_filter)
-        # at the end, return the queryset with the filters added
-        return queryset.order_by('-date_added')
+        If so, use the keyword variable's value to filter the database query.
+
+        - this is created in a way that you don't have to manually type every
+        case for a filter. This function loops through all Product fields and
+        checks for filters programatically
+        """
+        queryset = super().get_queryset()
+        # loops through the produdct's fields
+        for field in Product._meta.get_fields():
+            field_name = field.name
+            # check if the field name can be found from the GET request
+            if not field_name in self.request.GET:
+                # if not, keep iterating
+                continue
+            value = self.request.GET[field_name]
+            # check if there is a value given to the GET request
+            if not value:
+                # if not, keep iterating
+                continue
+            # if checks have passed, filter the queryset
+            queryset = queryset.filter(**{field_name: value})
+        return queryset.order_by(self.ordering)
 
 
 @login_required
