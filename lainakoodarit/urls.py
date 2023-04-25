@@ -15,21 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
-from account.views import SignUpView, UserProfileView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # login, sign up and account profile urls in their own urls.py
+    path('account/', include('account.urls')),
     # for browser reload to work in the "DEBUG = True" server
     path("__reload__/", include("django_browser_reload.urls")),
     # using the borrowing application as the root application
     path('', include('borrow.urls')),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('signup/', SignUpView.as_view(), name='signup'),
-    path('profile/', UserProfileView.as_view(), name='profile'),
 ]
 
 # allow media loading in the development environment

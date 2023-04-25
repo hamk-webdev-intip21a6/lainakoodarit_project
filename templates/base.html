@@ -20,29 +20,25 @@
         <p class="text-center opacity-75 hidden sm:block">| Lainakoodarit</p>
       </div>
       <ul class="flex gap-x-5">
-        <li>
+        <li class="hover:underline">
           <a href="{% url 'borrow:list' %}?category=book">Books</a>
         </li>
-        <li>
+        <li class="hover:underline">
           <a href="{% url 'borrow:list' %}?category=music">Music</a>
         </li>
-        <li>
+        <li class="hover:underline">
           <a href="{% url 'borrow:list' %}?category=movie">Movies</a>
         </li>
         {% if user.is_authenticated %}
-        
-        <li>
-          <p class="text-red-500">Hello {{user}} </p>
+        <li class="text-red-600 hover:underline">
+          <a href="{% url 'account:profile' %}">{{user|title}} Profile</a>
         </li>
-        <li>
-          <a href="{% url 'profile' %}">My profile</a>
-        </li>
-        <li>
-          <a href="{% url 'logout' %}">Logout</a>
+        <li class="hover:underline">
+          <a href="{% url 'account:logout' %}">Logout</a>
         </li>
         {% else%}
-        <li>
-          <a href="{% url 'login' %}">Login</a>
+        <li class="hover:underline">
+          <a href="{% url 'account:login' %}">Login</a>
         </li>
         {% endif%}
       </ul>
