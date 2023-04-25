@@ -43,7 +43,7 @@ class ProductView(generic.DetailView):
         if not user:
             return context
         user_loan = Event.objects.filter(
-            user=user.id, return_date__isnull=True)
+            user=user.id, product=product.id, return_date__isnull=True)
         context['user_loaned'] = user_loan.exists()
         return context
 
@@ -87,14 +87,14 @@ def create_loan(request, pk):
     product = get_object_or_404(Product, pk=pk)
     redirect_url = reverse_lazy('borrow:product', kwargs={'pk': product.pk})
     try:
-        # then add the loan to the amount loaned
-        product.loaned_amount += 1
-        product.save()
         # then create a loan event
         loan = Event.objects.create(user=request.user, product=product)
         loan.save()
     except ObjectDoesNotExist:
         return redirect(redirect_url + '?success=false&event=loan')
+    # when everything is done successfully, add the loan to the loaned amount
+    product.loaned_amount += 1
+    product.save()
     # redirect the user back to the product page afterwards
     return redirect(redirect_url + '?success=true&event=loan')
 
@@ -105,9 +105,6 @@ def return_loan(request, pk):
     product = get_object_or_404(Product, pk=pk)
     redirect_url = reverse_lazy('borrow:product', kwargs={'pk': product.pk})
     try:
-        # then return remove the loan from the amount loaned
-        product.loaned_amount -= 1
-        product.save()
         # then update the loaned event to have a return date
         loan = Event.objects.get(
             user=request.user, product=product, return_date__isnull=True)
@@ -115,5 +112,8 @@ def return_loan(request, pk):
         loan.save()
     except ObjectDoesNotExist:
         return redirect(redirect_url + '?success=false&event=return')
+    # when everything is done successfully, remove the loan from the loaned_amount
+    product.loaned_amount -= 1
+    product.save()
     # redirect the user back to the product page afterwards
     return redirect(redirect_url + '?success=true&event=return')
