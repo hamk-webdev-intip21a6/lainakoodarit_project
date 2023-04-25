@@ -3,6 +3,7 @@ from django.views import generic
 from .models import Product, Event
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 
 class IndexView(generic.ListView):
@@ -35,6 +36,15 @@ class ProductView(generic.DetailView):
         current_category = context['object'].category
         context['recent_additions'] = Product.objects.filter(
             category=current_category)[:5]
+
+        loans = Event.objects.filter(product=product.id)
+        context['loaned_amount'] = loans.count()
+        user = self.request.user
+        if not user:
+            return context
+        user_loan = Event.objects.filter(
+            user=user.id, return_date__isnull=True)
+        context['user_loaned'] = user_loan.exists()
         return context
 
 
@@ -74,7 +84,18 @@ class ProductListView(generic.ListView):
 @login_required
 def create_loan(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    event = Event.objects.create(user=request.user, product=product)
-    event.save()
-    # others
+    loan = Event.objects.create(user=request.user, product=product)
+    loan.save()
+    # redirect the user back to the product page afterwards
+    return redirect('borrow:product', pk=product.pk)
+
+
+@login_required
+def return_loan(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    loan = Event.objects.get(
+        user=request.user, product=product, return_date__isnull=True)
+    loan.return_date = timezone.now()
+    loan.save()
+    # redirect the user back to the product page afterwards
     return redirect('borrow:product', pk=product.pk)

@@ -51,7 +51,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'loaned_date',
-                    'last_update', 'is_returned')
+                    'last_update', 'return_date', 'is_returned')
 
     def is_returned(self, obj):
         return bool(obj.return_date)
