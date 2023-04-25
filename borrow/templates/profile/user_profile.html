@@ -5,28 +5,41 @@
 {% csrf_token %}
 
 <div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-xl sm:rounded-lg">
-    <div class="text-center font-bold mb-5">    <h1>{{ user.username }}</h1><h2>Loans</h2></div>
-    <div class="container mx-auto px-2 sm:px-0">
-        <table class=" bg-white rounded-lg shadow-md">
+    <div class="text-center font-bold mb-5">
+        <h1>{{ user.username }}</h1>
+        <h2>Loans</h2>
+    </div>
+    <div class="container mx-auto px-2 sm:px-0 text-center">
+        <table class=" bg-white rounded-lg shadow-md text-sm mx-auto">
             <thead class="bg-gray-200">
                 <tr>
-                    <th class="p-1">Product</th>
-                    <th class="p-1">Loan Date</th>
-                    <th class="p-1">Return Date</th>
-                    <th class="p-1">Additional Information</th>
-                    <th class="p-1">Action</th>
+                    <th class="p-2">ID</th>
+
+                    <th class="p-2">Name</th>
+                    <th class="p-2">Loan Date</th>
+                    <th class="p-2">Return Date</th>
+                    <th class="p-2">Late?</th>
+                    <th class="p-2">Action</th>
                 </tr>
             </thead>
             <tbody>
+                {% for loan, return_date in user_loans_with_return_dates %}
                 <tr class="border-t border-gray-300">
-                    <td class="p-1">Example Product</td>
-                    <td class="p-1">2023-04-20</td>
-                    <td class="p-1">2023-04-30</td>
-                    <td class="p-1">Some additional information</td>
-                    <td class="p-1">
+                    <td class="p-2">{{ loan.id }}</td>
+
+                    <td class="p-2"> {{ loan.product.name }}</td>
+                    <td class="p-2">{{ loan.loaned_date }}</td>
+                    <td class="p-2">{{ return_date }}</td>
+                    {% if return_date < loan.return_date %}
+                    <td class="p-2">Yes</td>
+                    {% else %}
+                    <td class="p-2">No</td>
+                    {% endif %}
+                    <td class="p-2">
                         <button class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
