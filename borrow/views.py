@@ -1,7 +1,9 @@
 # Create your views here.
+from django.db.models import ObjectDoesNotExist
 from django.views import generic
 from .models import Product, Event
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
@@ -37,8 +39,6 @@ class ProductView(generic.DetailView):
         context['recent_additions'] = Product.objects.filter(
             category=current_category)[:5]
 
-        loans = Event.objects.filter(product=product.id)
-        context['loaned_amount'] = loans.count()
         user = self.request.user
         if not user:
             return context
@@ -83,19 +83,37 @@ class ProductListView(generic.ListView):
 
 @login_required
 def create_loan(request, pk):
+    # first get the product
     product = get_object_or_404(Product, pk=pk)
-    loan = Event.objects.create(user=request.user, product=product)
-    loan.save()
+    redirect_url = reverse_lazy('borrow:product', kwargs={'pk': product.pk})
+    try:
+        # then add the loan to the amount loaned
+        product.loaned_amount += 1
+        product.save()
+        # then create a loan event
+        loan = Event.objects.create(user=request.user, product=product)
+        loan.save()
+    except ObjectDoesNotExist:
+        return redirect(redirect_url + '?success=false&event=loan')
     # redirect the user back to the product page afterwards
-    return redirect('borrow:product', pk=product.pk)
+    return redirect(redirect_url + '?success=true&event=loan')
 
 
 @login_required
 def return_loan(request, pk):
+    # first get the product
     product = get_object_or_404(Product, pk=pk)
-    loan = Event.objects.get(
-        user=request.user, product=product, return_date__isnull=True)
-    loan.return_date = timezone.now()
-    loan.save()
+    redirect_url = reverse_lazy('borrow:product', kwargs={'pk': product.pk})
+    try:
+        # then return remove the loan from the amount loaned
+        product.loaned_amount -= 1
+        product.save()
+        # then update the loaned event to have a return date
+        loan = Event.objects.get(
+            user=request.user, product=product, return_date__isnull=True)
+        loan.return_date = timezone.now()
+        loan.save()
+    except ObjectDoesNotExist:
+        return redirect(redirect_url + '?success=false&event=return')
     # redirect the user back to the product page afterwards
-    return redirect('borrow:product', pk=product.pk)
+    return redirect(redirect_url + '?success=true&event=return')

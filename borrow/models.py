@@ -44,7 +44,7 @@ class Product(models.Model):
     author = models.ManyToManyField(Author)
     category = models.CharField(max_length=30)
     amount = models.SmallIntegerField(default=0)
-    loaned_amount = models.SmallIntegerField(default=0)
+    loaned_amount = models.SmallIntegerField(default=0, editable=False)
     # NULLABLE fields - can be left empty
     genre = models.CharField(max_length=30, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True, null=True)

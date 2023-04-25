@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block title %}{{ product.name }} - {{ product.category }}{% endblock %}
 {% block content %}
+
+<!-- if page is reloaded after a successfull loan action -->
+{% if request.GET.success %}
+<section class="absolute top-12 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 
+  py-5 px-10 font-semibold rounded-lg">
+    <div class="alert">
+    {% if request.GET.success == 'true' %}
+      {{ request.GET.event|title }} successful! &#9989;
+    {% else %}
+      Error occurred while {{ request.GET.event }}! &#10060;
+    {% endif %}
+    </div>
+  </section>
+{% endif %}
+
 <article class="max-w-[1200px] mx-auto">
   <!-- product category in the database -->
   <p class="my-2 mx-5 xl:mx-0">
