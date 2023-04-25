@@ -2,14 +2,32 @@
 {% block title %}My profile{% endblock %}
 {% block content %}
 
-{% csrf_token %}
-
-<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-xl sm:rounded-lg">
-    <div class="text-center font-bold mb-5">
-        <h1>{{ user.username }}</h1>
-        <h2>Loans</h2>
+{% if request.GET.success %}
+<section class="absolute top-12 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 
+  py-5 px-10 font-semibold rounded-lg">
+    <div class="alert">
+    {% if request.GET.success == 'true' %}
+      {{ request.GET.event|title }} successful! &#9989;
+    {% else %}
+      Error occurred while {{ request.GET.event }}! &#10060;
+    {% endif %}
     </div>
-    <div class="container mx-auto px-2 sm:px-0 text-center">
+  </section>
+{% endif %}
+
+<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-md sm:rounded-lg">
+    
+    <div class="text-center font-bold mb-5">
+        {% if user.is_staff %}
+        <h1>Hi {{ user.username}}!</h1>
+        <p>Edit page from the admin page</p>
+        {% else %}
+        
+        <h1>Hi {{ user.username }}</h1>
+        <h2>Loans</h2>
+
+    </div>
+    <div class="container px-2 sm:px-0 text-center">
         <table class=" bg-white rounded-lg shadow-md text-sm mx-auto">
             <thead class="bg-gray-200">
                 <tr>
@@ -23,26 +41,35 @@
                 </tr>
             </thead>
             <tbody>
-                {% for loan, return_date in user_loans_with_return_dates %}
+                {% for event in user_loans reversed %}
+                {% if event.return_date == None %}
                 <tr class="border-t border-gray-300">
-                    <td class="p-2">{{ loan.id }}</td>
+                    <td class="p-2">{{ event.id }}</td>
 
-                    <td class="p-2"> {{ loan.product.name }}</td>
-                    <td class="p-2">{{ loan.loaned_date }}</td>
-                    <td class="p-2">{{ return_date }}</td>
-                    {% if return_date < loan.return_date %}
-                    <td class="p-2">Yes</td>
-                    {% else %}
-                    <td class="p-2">No</td>
-                    {% endif %}
+                    <td class="p-2"> {{ event.product.name }}</td>
+                    <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
+                    <td class="p-2">{{ event.return_date }}</td>
+                    <td class="p-2"><i class="bi bi-exclamation-diamond-fill" style="color: #9b5656;"></i>
+                    </td>
                     <td class="p-2">
-                        <button class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
+                        <form method="post" action="{% url 'account:return_loan' %}">
+                            {% csrf_token %}
+
+                            <input type="hidden" name="loan_id" value="{{ event.id }}">
+                            <button type="submit" class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
                     </td>
                 </tr>
+
+                
+                {% endif %}
+
                 {% endfor %}
             </tbody>
-        </table>
+        </table>{% endif %}
+
     </div>
 </div>
+
+
 
 {% endblock %}
