@@ -6,68 +6,143 @@
 <section class="absolute top-12 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 
   py-5 px-10 font-semibold rounded-lg">
     <div class="alert">
-    {% if request.GET.success == 'true' %}
-      {{ request.GET.event|title }} successful! &#9989;
-    {% else %}
-      Error occurred while {{ request.GET.event }}! &#10060;
-    {% endif %}
+        {% if request.GET.success == 'true' %}
+        {{ request.GET.event|title }} successful! &#9989;
+        {% else %}
+        Error occurred while {{ request.GET.event }}! &#10060;
+        {% endif %}
     </div>
-  </section>
+</section>
 {% endif %}
 
-<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-md sm:rounded-lg">
-    
-    <div class="text-center font-bold mb-5">
+
+<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-md sm:rounded-lg mb-10">
+
+
+
+    <div class="text-center font-bold mb-5 ">
         {% if user.is_staff %}
         <h1>Hi {{ user.username}}!</h1>
-        <p>Edit page from the admin page</p>
+        <p>Edit page from the admin page.</p>
         {% else %}
-        
-        <h1>Hi {{ user.username }}</h1>
-        <h2>Loans</h2>
+
+        <div class="mt-3">
+            <h1>{{ user.username }}</h1>
+        </div>
 
     </div>
-    <div class="container px-2 sm:px-0 text-center">
-        <table class=" bg-white rounded-lg shadow-md text-sm mx-auto">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="p-2">ID</th>
+    <div>
+        <ul class="flex list-none flex-row flex-wrap border-b-0 pl-0 " id="tabs-tab3" role="tablist" data-te-nav-ref>
+            <li role="presentation">
+                <a href="#tabs-home3"
+                class=" inline-block p-2 border-b-2 border-transparent bg-red-400 text-white rounded-t-lg hover:underline hover:bg-red-400"
+                id="tabs-home-tab3" data-te-toggle="pill" data-te-target="#tabs-home3" data-te-nav-active role="tab"
+                aria-controls="tabs-home3" aria-selected="true">Loans</a>
+              
+            </li>
+            <li role="presentation">
+                <a href="#tabs-profile3"
+                    class="inline-block p-2 border-b-2 border-transparent bg-red-300 text-white rounded-t-lg hover:underline hover:bg-red-400"
+                    id="tabs-profile-tab3" data-te-toggle="pill" data-te-target="#tabs-profile3" role="tab"
+                    aria-controls="tabs-profile3" aria-selected="false">History</a>
+            </li>
+        </ul>
+    </div>
 
-                    <th class="p-2">Name</th>
-                    <th class="p-2">Loan Date</th>
-                    <th class="p-2">Return Date</th>
-                    <th class="p-2">Late?</th>
-                    <th class="p-2">Action</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="h-[height-value] overflow-y-auto">
+        <div class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-home3" role="tabpanel" data-te-tab-active aria-labelledby="tabs-home-tab3">
+            <div class="container px-2 sm:px-0 text-center">
                 {% for event in user_loans reversed %}
+                                    {% if forloop.first %}
+
+                <table class=" w-full bg-white rounded-lg shadow-md text-sm mx-auto">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-2">ID</th>
+
+                            <th class="p-2">Name</th>
+                            <th class="p-2">Loan Date</th>
+                            <th class="p-2">Return Date</th>
+                            <th class="p-2">Late?</th>
+                            <th class="p-2">Action</th>
+                        </tr>
+                    </thead>
+                    {% endif %}
+                    <tbody>
                 {% if event.return_date == None %}
-                <tr class="border-t border-gray-300">
-                    <td class="p-2">{{ event.id }}</td>
 
-                    <td class="p-2"> {{ event.product.name }}</td>
-                    <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
-                    <td class="p-2">{{ event.return_date }}</td>
-                    <td class="p-2"><i class="bi bi-exclamation-diamond-fill" style="color: #9b5656;"></i>
-                    </td>
-                    <td class="p-2">
-                        <form method="post" action="{% url 'account:return_loan' %}">
-                            {% csrf_token %}
+                        <tr class="border-t border-gray-300 ">
+                            <td class="p-2">{{ event.id }}</td>
 
-                            <input type="hidden" name="loan_id" value="{{ event.id }}">
-                            <button type="submit" class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
-                    </td>
-                </tr>
+                            <td class="p-2"> {{ event.product.name }}</td>
+                            <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
+                            <td class="p-2">{{ event.return_date|date:"d.m.Y" }}</td>
+                            <td class="p-2"><i class="bi bi-exclamation-diamond-fill" style="color: #9b5656;"></i>
+                            </td>
+                            <td class="p-2">
+                                <form method="post" action="{% url 'account:return_loan' %}">
+                                    {% csrf_token %}
 
-                
-                {% endif %}
+                                    <input type="hidden" name="loan_id" value="{{ event.id }}">
+                                    <button type="submit"
+                                        class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
+                            </td>
+                        </tr>
 
-                {% endfor %}
-            </tbody>
-        </table>{% endif %}
 
+                        {% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <div class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-profile3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
+            <div class="container px-2 sm:px-0 text-center">
+                {% for event in user_loans reversed %}
+                {% if forloop.first %}
+
+                <table class=" bg-white rounded-lg shadow-md text-sm mx-auto w-full">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-2">ID</th>
+
+                            <th class="p-2">Name</th>
+                            <th class="p-2">Loan Date</th>
+                            <th class="p-2">Return Date</th>
+                        </tr>
+                    </thead>
+                    {% endif %}
+                    {% if event.return_date != None %}
+
+                    <tbody>
+
+                        <tr class="border-t border-gray-300">
+                            <td class="p-2">{{ event.id }}</td>
+
+                            <td class="p-2"> {{ event.product.name }}</td>
+                            <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
+                            <td class="p-2">{{ event.return_date|date:"d.m.Y" }}</td>
+
+                        </tr>
+
+
+                        {% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
+
+    {% endif %}
+
 </div>
 
 
