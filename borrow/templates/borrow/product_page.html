@@ -3,19 +3,21 @@
 {% block scripts %}
   {% load static %}
   <script src="{% static 'js/products.js' %}" defer></script>
+  <script src="{% static 'js/alert.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
 <!-- if page is reloaded after a successfull loan action -->
 {% if request.GET.success %}
-<section class="absolute top-12 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 
-  py-5 px-10 font-semibold rounded-lg">
-    <div class="alert">
+<section class="alert fixed top-8 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 
+  py-5 pl-10 pr-8 font-semibold rounded-lg transition-all duration-500 opacity-0 -translate-y-6">
+    <div class="flex w-full gap-x-2">
     {% if request.GET.success == 'true' %}
       {{ request.GET.event|title }} successful! &#9989;
     {% else %}
       Error occurred while {{ request.GET.event }}! &#10060;
     {% endif %}
+    <button type="button" class="px-2 opacity-75">x</button>
     </div>
   </section>
 {% endif %}
@@ -78,13 +80,13 @@
           <form method="post" action="{% url 'borrow:loan' pk=product.pk %}">
             {% csrf_token %}
             <button type="submit" class="bg-red-400 py-2 px-4 w-full rounded text-white font-semibold 
-              transition-all hover:text-neutral-900 active:scale-90">Loan this</button>
+              shadow-md transition-all hover:text-neutral-900 active:scale-90">Loan this</button>
           </form>
         {% elif user_loaned %}
         <form method="post" action="{% url 'borrow:return' pk=product.pk %}">
           {% csrf_token %}
-          <button type="submit" class="outline outline-red-400 py-2 px-4 w-full rounded text-red-400 font-semibold 
-            transition-all hover:outline-0 hover:bg-red-400 hover:text-white active:scale-90">Return loan</button>
+          <button type="submit" class="outline outline-1 outline-red-400 py-2 px-4 w-full rounded text-red-400 font-semibold 
+            shadow-md transition-all hover:outline-0 hover:bg-red-400 hover:text-white active:scale-90">Return loan</button>
         </form>
         {% elif not request.user.is_authenticated %}
           <button class="bg-black py-2 px-4 rounded text-neutral-100 font-semibold opacity-50

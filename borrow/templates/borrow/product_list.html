@@ -7,6 +7,23 @@
     <div class="flex items-end gap-x-2 text-lg font-semibold">
       <h1 class="text-2xl font-bold">Listings:</h1>
       <p>{{ listings.count }}</p>
+      <!-- if a get request is passed, give option to remove it -->
+      {% if request.GET %}
+        <a href="{% url 'borrow:list' %}" class="text-sm ml-2 pb-1 hover:underline">Remove all filter(s) x</a>
+      {% endif %}
+    </div>
+    <!-- show user the filters used, allow them to click it and remove the clicked on filter -->
+    <div class="flex gap-x-3 my-2">
+      {% for filter, value in request.GET.items %}
+      <!-- magic happens here, do not touch, just an extremely nice and easy to read url -->
+        <a href="{% url 'borrow:list' %}?{% for key, value in request.GET.items %}{% if key is not filter %}{{ key }}={{ value }}&{% endif %}{% endfor %}">
+        <div class="py-2 px-4 bg-red-100 rounded-md text-sm flex gap-x-3 shadow-sm transition-all hover:bg-red-200">
+          <p>{{ filter|title }}: <span class="font-semibold">{{ value|title }}</span>
+          </p>
+          <p>x</p>
+        </div>
+        </a>
+      {% endfor %}
     </div>
   </header>
   <section class="max-w-[1200px] mx-auto px-5 mb-20">
