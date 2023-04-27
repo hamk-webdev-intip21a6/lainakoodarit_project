@@ -4,6 +4,9 @@
     <title>{% block title %}{% endblock %}</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- favicon -->
+    {% load static %}
+    <link rel="icon" type="image/svg" href="{% static 'icons/django-logo.svg' %}">
     <!-- tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- bootstrap icons -->
@@ -12,7 +15,6 @@
     {% block scripts %}
     {% endblock %}
     <!-- navigation bar functionality script -->
-    {% load static %}
     <script src="{% static 'js/navbar.js' %}" defer></script>
   </head>
   <body class="min-h-screen min-h-[100svh] flex flex-col justify-between">
