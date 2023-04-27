@@ -64,20 +64,17 @@ class ProductListView(generic.ListView):
         checks for filters programatically
         """
         queryset = super().get_queryset()
-        # loops through the produdct's fields
-        for field in Product._meta.get_fields():
-            field_name = field.name
-            # check if the field name can be found from the GET request
-            if not field_name in self.request.GET:
+        # loops through the GET requests
+        for key, values in self.request.GET.lists():
+            # check if the key agument of a request is a Product attribute
+            print(key, values)
+            if not hasattr(Product, key):
                 # if not, keep iterating
                 continue
-            value = self.request.GET[field_name]
-            # check if there is a value given to the GET request
-            if not value:
-                # if not, keep iterating
-                continue
-            # if checks have passed, filter the queryset
-            queryset = queryset.filter(**{f"{field_name}__icontains":value})
+            # check that the request is not empty
+            if values[0] is not "":
+                queryset = queryset.filter(**{f"{key}__in": values})
+        # return the queryset and order by the given ordering
         return queryset.order_by(self.ordering)
 
 
