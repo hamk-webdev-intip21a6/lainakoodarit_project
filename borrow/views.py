@@ -15,7 +15,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """ Return the five most recent objects in the product category """
-        return Product.objects.order_by('-date_added')[:5]
+        return Product.objects.order_by('-date_added')
 
 
 class ProductView(generic.DetailView):
@@ -77,7 +77,7 @@ class ProductListView(generic.ListView):
                 # if not, keep iterating
                 continue
             # if checks have passed, filter the queryset
-            queryset = queryset.filter(**{field_name: value})
+            queryset = queryset.filter(**{f"{field_name}__icontains":value})
         return queryset.order_by(self.ordering)
 
 

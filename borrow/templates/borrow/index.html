@@ -7,30 +7,34 @@
 {% block content %}
 <main class="grid md:grid-flow-col grid-cols-5 gap-x-5 gap-y-5 px-5 max-w-[1200px] mx-auto">
   <!-- search form -->
-  <form action="" class="col-span-6 md:col-span-3 lg:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
+  <form action="{% url 'borrow:list' %}" method='get' class="col-span-6 md:col-span-3 lg:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
     {% csrf_token %}
     <div class="flex flex-col">
-      <label for="search_name">Search name</label>
-      <input type="text" name="search_name" id="search_name" autofocus
+      <label for="name">Search name</label>
+      <input type="text" name="name" id="name" autofocus
       class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
     </div>
     <div class="flex flex-col">
-      <label for="search_year">Search year</label>
-      <input type="text" name="search_year" id="search_year"
-      class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
+      <label for="genre">Genre</label>
+      <select data-te-select-init class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2" id="genre" name="genre">
+        <option value="">Select All</option>
+        
+        {% for listing in listings %}
+        <option value="{{ listing.genre }}">{{ listing.genre }}</option>
+
+        {% endfor %}
+      </select>
     </div>
-    <div class="flex flex-col">
-      <label for="search_author">Search author</label>
-      <input type="text" name="search_author" id="search_author"
-      class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
-    </div>
-    <div class="flex gap-x-2">
-      <label for="category_books" class="select-none">Books</label>
-      <input type="checkbox" name="category_books" id="category_books" value="search_books"/>
-      <label for="category_music" class="select-none">Music</label>
-      <input type="checkbox" name="category_music" id="category_music" value="search_music"/>
-      <label for="category_movies" class="select-none">Movies</label>
-      <input type="checkbox" name="category_movies" id="category_movies" value="search_movies"/>
+    
+    <div class="flex flex-col gap-x-2">
+      <label for="category">Category</label>
+      <select data-te-select-init class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2" id="genre" name="genre">
+        <option value="">Select All</option>
+        
+        {% for listing in listings %}
+        <option value="{{ listing.category }}">{{ listing.category }}</option>
+        {% endfor %}
+      </select>
     </div>
     <button type="submit" class="bg-red-400 text-neutral-100 font-semibold w-20 px-4 py-2 rounded
       transition-all hover:text-neutral-900 active:brightness-75">Search</button>
@@ -55,7 +59,7 @@
 <section class="max-w-[1200px] mx-auto mt-10 px-5">
   <h3 class="font-semibold mb-2">Recent additions</h3>
   <div class="carousel grid grid-flow-col text-center pb-6 overflow-auto gap-x-4">
-    {% for listing in listings %}
+    {% for listing in listings|slice:":5" %}
     <a href="{% url 'borrow:product' listing.id %}" draggable="false"
       class="select-none shadow-md w-[200px] aspect-square group hover:shadow-lg">
       <div class="overflow-hidden aspect-square relative group">
