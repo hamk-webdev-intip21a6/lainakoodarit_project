@@ -5,9 +5,9 @@
   <script src="{% static 'js/carousel.js' %}" defer></script>
 {% endblock %}
 {% block content %}
-<main class="grid md:grid-flow-col grid-cols-5 gap-x-5 px-5 max-w-[1200px] mx-auto">
+<main class="grid md:grid-flow-col grid-cols-5 gap-x-5 gap-y-5 px-5 max-w-[1200px] mx-auto">
   <!-- search form -->
-  <form action="" class="col-span-6 md:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
+  <form action="" class="col-span-6 md:col-span-3 lg:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
     {% csrf_token %}
     <div class="flex flex-col">
       <label for="search_name">Search name</label>
@@ -36,7 +36,7 @@
       transition-all hover:text-neutral-900 active:brightness-75">Search</button>
   </form>
   <!-- user guide -->
-  <div class="col-span-5 flex flex-col justify-center md:col-span-3">
+  <div class="col-span-5 flex flex-col gap-y-2 justify-center order-first mt-10 text-center md:order-last md:col-span-2 lg:col-span-3">
     <div>
       <h2 class="text-lg text-center font-semibold">Guide</h2>
       <p>
@@ -45,6 +45,9 @@
         cum animi laborum, culpa dolorum quasi fuga minus tempora officiis! Tempora, deleniti sit.
       </p>
     </div>
+    <p>Don't have an account? 
+      <a href="{% url 'account:signup' %}" class="text-red-500 transition-all hover:brightness-75 hover:underline">Create one here</a>
+    </p>
   </div>
 </main>
 
