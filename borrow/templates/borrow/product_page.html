@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ product.name }} - {{ product.category }}{% endblock %}
-{% block content %}
+{% block scripts %}
+  {% load static %}
+  <script src="{% static 'js/products.js' %}" defer></script>
+{% endblock %}
 
+{% block content %}
 <!-- if page is reloaded after a successfull loan action -->
 {% if request.GET.success %}
 <section class="absolute top-12 right-1/2 translate-x-1/2 bg-white shadow-lg z-10 

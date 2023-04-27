@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Borrow System{% endblock %}
+{% block scripts %}
+  {% load static %}
+  <script src="{% static 'js/carousel.js' %}" defer></script>
+{% endblock %}
 {% block content %}
 <main class="grid md:grid-flow-col grid-cols-5 gap-x-5 px-5 max-w-[1200px] mx-auto">
   <!-- search form -->

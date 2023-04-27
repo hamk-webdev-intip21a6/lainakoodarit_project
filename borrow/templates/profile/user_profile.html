@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %}My profile{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/profile-tabs.js' %}" defer></script>
+{% endblock %}
 {% block content %}
 
 {% if request.GET.success %}
