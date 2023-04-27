@@ -16,12 +16,19 @@
     <script src="{% static 'js/navbar.js' %}" defer></script>
   </head>
   <body class="min-h-screen min-h-[100svh] flex flex-col justify-between">
-    <nav class="w-full max-w-[1000px] mx-auto flex justify-between p-5">
-      <div class="flex gap-x-2 justify-center items-end">
-        <a href="{% url 'borrow:index' %}" class="text-center text-xl font-bold">Borrow System</a>
-        <p class="text-center opacity-75 hidden sm:block">| Lainakoodarit</p>
+    <nav class="w-full max-w-[1000px] mx-auto flex flex-col justify-between p-5 gap-y-3 relative sm:flex-row">
+      <!-- navigation toggle button for smaller screens -->
+      <button class="absolute top-3 right-7 sm:hidden">
+        <img src="{% static 'icons/navbutton-open.svg' %}" alt="navigation toggle button" width="40" height="40">
+      </button>
+      <div class="flex gap-x-2 justify-center items-center">
+        <a href="{% url 'borrow:index' %}" class="text-center text-xl font-bold w-1/2 sm:w-full">Borrow System</a>
+        <p class="text-center opacity-75 hidden self-center pt-1 md:block">Lainakoodarit</p>
       </div>
-      <ul class="flex gap-x-5">
+      <!-- navigation links to different pages -->
+      <ul class="mx-auto text-center w-full hidden sm:flex sm:gap-x-4
+        [&>li>a]:py-2 [&>li>a]:block [&>li>a]:w-full [&>li]:rounded-md [&>li:nth-child(even)]:bg-red-50 
+        sm:w-auto sm:mx-0 sm:flex-row sm:[&>li:nth-child(even)]:bg-transparent">
         <li class="hover:underline">
           <a href="{% url 'borrow:list' %}?category=book">Books</a>
         </li>
