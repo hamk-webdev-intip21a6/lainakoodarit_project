@@ -26,15 +26,13 @@
       </select>
     </div>
     
-    <div class="flex flex-col gap-x-2">
-      <label for="category">Category</label>
-      <select data-te-select-init class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2" id="genre" name="genre">
-        <option value="">Select All</option>
-        
-        {% for listing in listings %}
-        <option value="{{ listing.category }}">{{ listing.category }}</option>
-        {% endfor %}
-      </select>
+    <div class="flex gap-x-2">
+      <label for="category_books" class="select">Books</label>
+      <input type="checkbox" name="category" id="category_books" value="book"/>
+      <label for="category_music" class="select">Music</label>
+      <input type="checkbox" name="category" id="category_music" value="music"/>
+      <label for="category_movies" class="select">Movies</label>
+      <input type="checkbox" name="category" id="category_movies" value="movie"/>
     </div>
     <button type="submit" class="bg-red-400 text-neutral-100 font-semibold w-20 px-4 py-2 rounded
       transition-all hover:text-neutral-900 active:brightness-75">Search</button>
