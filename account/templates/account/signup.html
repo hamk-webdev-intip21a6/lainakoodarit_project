@@ -2,14 +2,16 @@
 {% block content %}
 <section class="px-5 max-w-[1200px] mx-auto">
     <div class="flex justify-center">
-        <form method="post" novalidate class="bg-slate-200 col-span-6 md:col-span-2 p-8 gap-y-2 shadow-lg rounded-lg p-5 w-96 text-center">
+        <form method="post" novalidate class="outline outline-2 outline-red-400 md:col-span-2 p-8 gap-y-2 shadow-lg rounded-lg p-5 w-96 text-center">
             {% csrf_token %}
             <h2 class="text-center mb-4 "><strong>Sign up</strong></h2>
             <div class="flex flex-col">
                 {% for field in form %}
                 <div class="mb-4">
                     <label for="{{ field.auto_id }}" class="block text-sm font-medium">{{ field.label }}</label>
-                    {{ field }}
+                    <input type="{% if field.name == 'password1' or field.name == 'password2' %}password{% else %}text{% endif %}" 
+                      id="id_{{ field.name }}" name="{{ field.name }}" maxlength="150" required
+                    class="outline outline-1 outline-red-400 rounded-sm py-1 px-2 transition-all hover:outline-2 focus:bg-red-100">
                 </div>
                 {% endfor %}
                 <button type="submit" class="bg-red-400 text-neutral-100 font-semibold px-4 py-2 rounded

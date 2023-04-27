@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="w-96 px-5 max-w-[1200px] mx-auto ">
+  <!-- search form -->
+  <form method="post" class="flex flex-col gap-y-4 outline outline-2 outline-red-400 px-8 py-10 shadow-lg rounded-lg text-center
+    transition-all hover:shadow-xl">
+    {% csrf_token %}
+    <div class="flex flex-col gap-y-3">
+      <!-- username -->
+      <label for="{{ form.username.id_for_label }}" class="font-semibold">Username</label>
+      <input type="text" id="id_username" name="username" autocomplete="username" maxlength="150" required autofocus
+      class="outline outline-1 outline-red-400 rounded-sm py-1 px-2 transition-all hover:outline-2 focus:bg-red-100">
+      <!-- password -->
+      <label for="{{ form.password.id_for_label }}" class="font-semibold">Password</label>
+      <input type="password" id="id_password" name="password" autocomplete="password" maxlength="150" required
+      class="outline outline-1 outline-red-400 rounded-sm py-1 px-2 transition-all hover:outline-2 focus:bg-red-100">
+    </div>
+    <div>
+      <p>Don't have an account?</p>
+      <a class="text-red-500 hover:underline" href="{% url 'account:signup' %}">Create an account</a>
+    </div>
+    <button type="submit" class="mx-auto bg-red-400 text-neutral-100 font-semibold w-full px-4 py-2 rounded transition-all hover:text-neutral-900 active:brightness-75 mt-3">Login</button>
+    {% if form.errors %}
+    <p class="my-4 italic">* Username or password is incorrect</p>
+    {% endif %}
+  </form>
+   
+  <!-- user guide -->
+ 
+</section>
+{% endblock %}
