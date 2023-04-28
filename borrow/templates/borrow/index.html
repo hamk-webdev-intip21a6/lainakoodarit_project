@@ -10,41 +10,55 @@
   <form action="{% url 'borrow:list' %}" method="get" class="col-span-6 grid grid-flow-row gap-y-2 shadow-lg 
     rounded-lg p-5 md:col-span-3 lg:col-span-2">
     {% csrf_token %}
+    <!-- Name -->
     <div class="flex flex-col">
       <label for="name">Search name</label>
       <input type="text" name="name" id="name" autofocus
       class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2"/>
     </div>
+    <!-- Author-->
+    <div class="flex flex-col">
+      <label for="author_name">Author</label>
+      <select data-te-select-init class="bg-transparent px-2 py-1 outline outline-1 outline-red-400 rounded 
+        hover:outline-2 focus:outline-2" id="author" name="author">
+        <option value="" class="italic">--Select All--</option>
+        {% for listing in authors|dictsort:"author_name" %}
+        <!-- make sure that there cannot be multiple listings of the same genre -->
+        {% ifchanged listing.author_name %}
+          <option value="{{ listing.author_name }}">{{ listing.author_name|title }}</option>
+        {% endifchanged %}
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Genre-->
     <div class="flex flex-col">
       <label for="genre">Genre</label>
       <select data-te-select-init class="bg-transparent px-2 py-1 outline outline-1 outline-red-400 rounded 
         hover:outline-2 focus:outline-2" id="genre" name="genre">
         <option value="" class="italic">--Select All--</option>
-        
         {% for listing in listings|dictsort:"genre" %}
         <!-- make sure that there cannot be multiple listings of the same genre -->
         {% ifchanged listing.genre %}
           <option value="{{ listing.genre }}">{{ listing.genre|title }}</option>
         {% endifchanged %}
-
         {% endfor %}
       </select>
     </div>
+    <!-- Language-->
     <div class="flex flex-col">
       <label for="language">Language</label>
       <select data-te-select-init class="bg-transparent px-2 py-1 outline outline-1 outline-red-400 rounded 
         hover:outline-2 focus:outline-2" id="language" name="language">
         <option value="" class="italic">--Select All--</option>
-        
         {% for listing in listings|dictsort:"language" %}
         <!-- make sure that there cannot be multiple listings of the same genre -->
         {% ifchanged listing.language %}
           <option value="{{ listing.language }}">{{ listing.language|title }}</option>
         {% endifchanged %}
-
         {% endfor %}
       </select>
     </div>
+    <!-- Category -->
     <div class="flex gap-x-2">
       <label for="category_books" class="select">Books</label>
       <input type="checkbox" name="category" id="category_books" value="book"/>
@@ -53,6 +67,7 @@
       <label for="category_movies" class="select">Movies</label>
       <input type="checkbox" name="category" id="category_movies" value="movie"/>
     </div>
+    <!-- Available -->
     <div class="flex gap-x-2">
       <label for="Available">Available</label>
       <input type="checkbox" name="category" id="category_books" value="book"/>

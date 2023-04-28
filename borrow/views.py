@@ -1,7 +1,7 @@
 # Create your views here.
 from django.db.models import ObjectDoesNotExist
 from django.views import generic
-from .models import Product, Event
+from .models import Product, Event, Author
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,11 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """ Return the five most recent objects in the product category """
         return Product.objects.order_by('-date_added')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        authors = Author.objects.all()
+        context['authors'] = authors
+        return context
 
 
 class ProductView(generic.DetailView):
