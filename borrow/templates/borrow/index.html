@@ -21,7 +21,7 @@
         hover:outline-2 focus:outline-2" id="genre" name="genre">
         <option value="" class="italic">--Select All--</option>
         
-        {% for listing in listings %}
+        {% for listing in listings|dictsort:"genre" %}
         <!-- make sure that there cannot be multiple listings of the same genre -->
         {% ifchanged listing.genre %}
           <option value="{{ listing.genre }}">{{ listing.genre|title }}</option>
@@ -30,7 +30,21 @@
         {% endfor %}
       </select>
     </div>
-    
+    <div class="flex flex-col">
+      <label for="language">Language</label>
+      <select data-te-select-init class="bg-transparent px-2 py-1 outline outline-1 outline-red-400 rounded 
+        hover:outline-2 focus:outline-2" id="language" name="language">
+        <option value="" class="italic">--Select All--</option>
+        
+        {% for listing in listings|dictsort:"language" %}
+        <!-- make sure that there cannot be multiple listings of the same genre -->
+        {% ifchanged listing.language %}
+          <option value="{{ listing.language }}">{{ listing.language|title }}</option>
+        {% endifchanged %}
+
+        {% endfor %}
+      </select>
+    </div>
     <div class="flex gap-x-2">
       <label for="category_books" class="select">Books</label>
       <input type="checkbox" name="category" id="category_books" value="book"/>
@@ -39,8 +53,13 @@
       <label for="category_movies" class="select">Movies</label>
       <input type="checkbox" name="category" id="category_movies" value="movie"/>
     </div>
+    <div class="flex gap-x-2">
+      <label for="Available">Available</label>
+      <input type="checkbox" name="category" id="category_books" value="book"/>
+    </div>
+    
     <button type="submit" class="bg-red-400 text-neutral-100 font-semibold w-20 px-4 py-2 rounded
-      transition-all hover:text-neutral-900 active:brightness-75">Search</button>
+    transition-all hover:text-neutral-900 active:brightness-75">Search</button>
   </form>
   <!-- user guide -->
   <div class="col-span-5 flex flex-col gap-y-2 justify-center order-first mt-10 text-center md:order-last md:col-span-2 lg:col-span-3">
