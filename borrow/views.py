@@ -72,8 +72,12 @@ class ProductListView(generic.ListView):
                 # if not, keep iterating
                 continue
             # check that the request is not empty
-            if values[0] is not "":
-                queryset = queryset.filter(**{f"{key}__in": values})
+            if values[0] is "":
+                continue
+            # if prior checks have passed, loop through the values
+            # and use them as filters for the database query
+            for value in values:
+                queryset = queryset.filter(**{f"{key}__icontains": value})
         # return the queryset and order by the given ordering
         return queryset.order_by(self.ordering)
 
