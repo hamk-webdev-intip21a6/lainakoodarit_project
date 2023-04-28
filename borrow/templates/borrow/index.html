@@ -7,7 +7,8 @@
 {% block content %}
 <main class="grid md:grid-flow-col grid-cols-5 gap-x-5 gap-y-5 px-5 max-w-[1200px] mx-auto">
   <!-- search form -->
-  <form action="{% url 'borrow:list' %}" method='get' class="col-span-6 md:col-span-3 lg:col-span-2 grid grid-flow-row gap-y-2 shadow-lg rounded-lg p-5">
+  <form action="{% url 'borrow:list' %}" method="get" class="col-span-6 grid grid-flow-row gap-y-2 shadow-lg 
+    rounded-lg p-5 md:col-span-3 lg:col-span-2">
     {% csrf_token %}
     <div class="flex flex-col">
       <label for="name">Search name</label>
@@ -16,11 +17,15 @@
     </div>
     <div class="flex flex-col">
       <label for="genre">Genre</label>
-      <select data-te-select-init class="px-2 py-1 outline outline-1 outline-red-400 rounded hover:outline-2 focus:outline-2" id="genre" name="genre">
-        <option value="">Select All</option>
+      <select data-te-select-init class="bg-transparent px-2 py-1 outline outline-1 outline-red-400 rounded 
+        hover:outline-2 focus:outline-2" id="genre" name="genre">
+        <option value="" class="italic">--Select All--</option>
         
         {% for listing in listings %}
-        <option value="{{ listing.genre }}">{{ listing.genre }}</option>
+        <!-- make sure that there cannot be multiple listings of the same genre -->
+        {% ifchanged listing.genre %}
+          <option value="{{ listing.genre }}">{{ listing.genre|title }}</option>
+        {% endifchanged %}
 
         {% endfor %}
       </select>

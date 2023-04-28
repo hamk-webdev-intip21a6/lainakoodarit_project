@@ -67,17 +67,18 @@ class ProductListView(generic.ListView):
         # loops through the GET requests
         for key, values in self.request.GET.lists():
             # check if the key agument of a request is a Product attribute
-            print(key, values)
             if not hasattr(Product, key):
                 # if not, keep iterating
                 continue
-            # check that the request is not empty
+            # check that the kwarg is not empty
             if values[0] is "":
                 continue
             # if prior checks have passed, loop through the values
             # and use them as filters for the database query
-            for value in values:
-                queryset = queryset.filter(**{f"{key}__icontains": value})
+            if len(values) <= 1:
+                queryset = queryset.filter(**{f"{key}__icontains": values[0]})
+            else:
+                queryset = queryset.filter(**{f"{key}__in": values})
         # return the queryset and order by the given ordering
         return queryset.order_by(self.ordering)
 
