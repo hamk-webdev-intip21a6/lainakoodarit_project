@@ -16,6 +16,7 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """ Return the five most recent objects in the product category """
         return Product.objects.order_by('-date_added')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         authors = Author.objects.all()
@@ -69,19 +70,25 @@ class ProductListView(generic.ListView):
         checks for filters programatically
         """
         queryset = super().get_queryset()
+        # filter the query's author by name if one is provided
+        author_name_query = self.request.GET.get('author')
+        if author_name_query:
+            queryset = queryset.filter(author__author_name=author_name_query)
         # loops through the GET requests
         for key, values in self.request.GET.lists():
             # check if the key agument of a request is a Product attribute
             # and that the kwarg is not empty
-            if not hasattr(Product, key) or not values[0]:
+            if not hasattr(Product, key) or not values[0] or author_name_query:
                 # if either of these doesn't pass, continue iterating
                 continue
             # if prior checks have passed, loop through the values
             # and use them as filters for the database query
             filter = f'{key}__icontains' if len(values) == 1 else f'{key}__in'
+            print(key, values, filter)
             if len(values) == 1:
                 queryset = queryset.filter(**{filter: values[0]})
             else:
+                print("value is not 1")
                 queryset = queryset.filter(**{filter: values})
         # return the queryset and order by the given ordering
         return queryset.order_by(self.ordering)

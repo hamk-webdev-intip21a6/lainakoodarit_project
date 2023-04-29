@@ -9,7 +9,6 @@
   <!-- search form -->
   <form action="{% url 'borrow:list' %}" method="get" class="col-span-6 grid grid-flow-row gap-y-2 shadow-lg 
     rounded-lg p-5 md:col-span-3 lg:col-span-2">
-    {% csrf_token %}
     <!-- Name -->
     <div class="flex flex-col">
       <label for="name">Search name</label>
