@@ -74,30 +74,26 @@ class ProductListView(generic.ListView):
         author_name_query = self.request.GET.get('author')
         if author_name_query:
             queryset = queryset.filter(author__author_name=author_name_query)
-        print(author_name_query)
         # loops through the GET requests
         for key, values in self.request.GET.lists():
+            # if get query keyword is author, change it to correct attribute name
+            key = 'author__author_name' if key == 'author' else key
             # check if the key agument of a request is a Product attribute
             # and that the kwarg is not empty
-            
-                
-            if not hasattr(Product, key) or not values[0]:
+            if not hasattr(Product, key) and not values[0]:
                 # if either of these doesn't pass, continue iterating
                 continue
-            
+
             # if prior checks have passed, loop through the values
             # and use them as filters for the database query
-      
-                
-            # filter = f'{key}__icontains' if len(values) == 1 else f'{key}__in'
-            if key == 'author': filter = f'{key}__author_name__icontains'
-            elif len(values) == 1: filter = f'{key}__icontains'
-            else: filter = f'{key}__in'
-            
-            print(key, values, filter)
+            # check that the given GET values for a category are singular
+            if len(values) == 1:
+                filter = f'{key}__icontains'
+            # if there are multiple GET values for a singular keyword
+            else:
+                filter = f'{key}__in'
             if len(values) == 1:
                 queryset = queryset.filter(**{filter: values[0]})
-                
             else:
                 print("value is not 1")
                 queryset = queryset.filter(**{filter: values})
