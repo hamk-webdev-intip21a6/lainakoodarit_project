@@ -9,6 +9,7 @@ from borrow.models import UserProfile, Event, Product
 from django.utils import timezone
 from django.shortcuts import redirect, reverse
 from django.db.models import ObjectDoesNotExist
+from datetime import datetime, timedelta
 
 
 class LoggingInView(LoginView):
@@ -45,7 +46,7 @@ class ReturnLoanView(LoginRequiredMixin, View):
         try:
             loan_id = request.POST.get('loan_id')
             loan = Event.objects.get(id=loan_id, user=request.user)
-            loan.return_date = timezone.now()
+            loan.actual_return_date = timezone.now()
             loan.save()
         except ObjectDoesNotExist:
             return redirect(redirect_url + '?success=false&event=return')

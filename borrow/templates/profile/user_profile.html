@@ -74,7 +74,7 @@
                     </thead>
                     {% endif %}
                     <tbody>
-                {% if event.return_date == None %}
+                {% if event.actual_return_date == None %}
 
                         <tr class="border-t border-gray-300 ">
                             <td class="p-2">{{ event.id }}</td>
@@ -117,11 +117,11 @@
 
                             <th class="p-2">Name</th>
                             <th class="p-2">Loan Date</th>
-                            <th class="p-2">Return Date</th>
+                            <th class="p-2">Returned Date</th>
                         </tr>
                     </thead>
                     {% endif %}
-                    {% if event.return_date != None %}
+                    {% if event.actual_return_date != None %}
 
                     <tbody>
 
@@ -130,7 +130,7 @@
 
                             <td class="p-2"> {{ event.product.name }}</td>
                             <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
-                            <td class="p-2">{{ event.return_date|date:"d.m.Y" }}</td>
+                            <td class="p-2">{{ event.actual_return_date|date:"d.m.Y" }}</td>
 
                         </tr>
 

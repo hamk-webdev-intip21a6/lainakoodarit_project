@@ -51,10 +51,10 @@ class ProductAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'loaned_date',
-                    'last_update', 'return_date', 'is_returned')
+                    'last_update', 'return_date', 'actual_return_date', 'is_returned')
 
     def is_returned(self, obj):
-        return bool(obj.return_date)
+        return bool(obj.actual_return_date)
 
     is_returned.boolean = True
 

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 class IndexView(generic.ListView):
@@ -49,7 +50,7 @@ class ProductView(generic.DetailView):
         if not user:
             return context
         user_loan = Event.objects.filter(
-            user=user.id, product=product.id, return_date__isnull=True)
+            user=user.id, product=product.id, actual_return_date__isnull=True)
         context['user_loaned'] = user_loan.exists()
         return context
 
@@ -103,12 +104,20 @@ class ProductListView(generic.ListView):
 
 @login_required
 def create_loan(request, pk):
+
+    loan_times = {
+        "music" : datetime.today() + timedelta(days=7),
+        "book" : datetime.today() + timedelta(days=30),
+        "movie" : datetime.today() + timedelta(days=3)
+    }
+
     # first get the product
     product = get_object_or_404(Product, pk=pk)
     redirect_url = reverse_lazy('borrow:product', kwargs={'pk': product.pk})
     try:
         # then create a loan event
-        loan = Event.objects.create(user=request.user, product=product)
+        loan_time = loan_times[product.category]
+        loan = Event.objects.create(user=request.user, product=product, return_date=loan_time)
         loan.save()
     except ObjectDoesNotExist:
         return redirect(redirect_url + '?success=false&event=loan')
@@ -127,8 +136,8 @@ def return_loan(request, pk):
     try:
         # then update the loaned event to have a return date
         loan = Event.objects.get(
-            user=request.user, product=product, return_date__isnull=True)
-        loan.return_date = timezone.now()
+            user=request.user, product=product, actual_return_date__isnull=True)
+        loan.actual_return_date = timezone.now()
         loan.save()
     except ObjectDoesNotExist:
         return redirect(redirect_url + '?success=false&event=return')

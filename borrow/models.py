@@ -78,6 +78,7 @@ class Event(models.Model):
         to=Product, on_delete=models.CASCADE, default=None)
     loaned_date = models.DateField(auto_now_add=True)
     return_date = models.DateTimeField(blank=True, null=True, editable=False)
+    actual_return_date = models.DateTimeField(blank=True, null=True, editable=False)
     # updates the value when model is saved
     last_update = models.DateTimeField(auto_now=True)
 
