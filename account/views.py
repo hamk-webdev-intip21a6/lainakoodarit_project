@@ -9,7 +9,7 @@ from borrow.models import UserProfile, Event, Product
 from django.utils import timezone
 from django.shortcuts import redirect, reverse
 from django.db.models import ObjectDoesNotExist
-from datetime import datetime, timedelta
+from datetime import datetime, time
 
 
 class LoggingInView(LoginView):
@@ -28,12 +28,16 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = 'profile/user_profile.html'
     context_object_name = 'profile'
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return self.request.user.userprofile
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_loans'] = Event.objects.filter(user=self.request.user)
+
+        today_datetime = timezone.make_aware(datetime.combine(timezone.localtime(timezone.now()).date(), time.min))
+        for loan in context['user_loans']:
+            loan.is_late = today_datetime > loan.return_date
 
         return context
 

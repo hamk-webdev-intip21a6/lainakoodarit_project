@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}My profile{% endblock %}
 {% block scripts %}
-    {% load static %}
-    <script src="{% static 'js/profile-tabs.js' %}" defer></script>
+{% load static %}
+<script src="{% static 'js/profile-tabs.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 
@@ -20,29 +20,29 @@
 {% endif %}
 
 
-<div class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-md sm:rounded-lg mb-10">
+<section class="relative bg-white p-2 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-md sm:rounded-lg mb-10">
 
 
 
     <div class="text-center font-bold mb-5 ">
-        {% if user.is_staff %}
-        <h1>Hi {{ user.username}}!</h1>
-        <p>Edit page from the admin page.</p>
-        {% else %}
-
         <div class="mt-3">
             <h1>{{ user.username }}</h1>
         </div>
-
+        {% if not user_loans %}
+        <div class="mt-10">
+        <i class="bi bi-exclamation-triangle-fill text-2xl" style="color: rgb(248 113 113);"></i>
+        </div>
+        <p>No loans found</p>
+        {% else %}
     </div>
     <div>
-        <ul class="flex list-none flex-row flex-wrap border-b-0 pl-0 " id="tabs-tab3" role="tablist" data-te-nav-ref>
+        <ul class="flex list-none flex-row flex-wrap border-b-0 pl-0" id="tabs-tab3" role="tablist" data-te-nav-ref>
             <li role="presentation">
                 <a href="#tabs-home3"
-                class=" inline-block p-2 border-b-2 border-transparent bg-red-400 text-white rounded-t-lg hover:underline hover:bg-red-400"
-                id="tabs-home-tab3" data-te-toggle="pill" data-te-target="#tabs-home3" data-te-nav-active role="tab"
-                aria-controls="tabs-home3" aria-selected="true">Loans</a>
-              
+                    class=" inline-block p-2 border-b-2 border-transparent bg-red-400 text-white rounded-t-lg hover:underline hover:bg-red-400 "
+                    id="tabs-home-tab3" data-te-toggle="pill" data-te-target="#tabs-home3" data-te-nav-active role="tab"
+                    aria-controls="tabs-home3" aria-selected="true">Loans</a>
+
             </li>
             <li role="presentation">
                 <a href="#tabs-profile3"
@@ -58,7 +58,7 @@
             id="tabs-home3" role="tabpanel" data-te-tab-active aria-labelledby="tabs-home-tab3">
             <div class="container px-2 sm:px-0 text-center">
                 {% for event in user_loans reversed %}
-                                    {% if forloop.first %}
+                {% if forloop.first %}
 
                 <table class=" w-full bg-white rounded-lg shadow-md text-sm mx-auto">
                     <thead class="bg-gray-200">
@@ -74,23 +74,29 @@
                     </thead>
                     {% endif %}
                     <tbody>
-                {% if event.actual_return_date == None %}
+                        {% if event.actual_return_date == None %}
 
                         <tr class="border-t border-gray-300 ">
                             <td class="p-2">{{ event.id }}</td>
-
                             <td class="p-2"> {{ event.product.name }}</td>
                             <td class="p-2">{{ event.loaned_date|date:"d.m.Y" }}</td>
                             <td class="p-2">{{ event.return_date|date:"d.m.Y" }}</td>
-                            <td class="p-2"><i class="bi bi-exclamation-diamond-fill" style="color: #9b5656;"></i>
+
+                            <td class="p-2">
+                                {% if loan.is_late %}
+
+                                <i class="bi bi-exclamation-circle-fill" style="color: rgb(248 113 113);"></i>
+                                {% endif %}
+
                             </td>
+
                             <td class="p-2">
                                 <form method="post" action="{% url 'account:return_loan' %}">
                                     {% csrf_token %}
 
                                     <input type="hidden" name="loan_id" value="{{ event.id }}">
                                     <button type="submit"
-                                        class="bg-red-400 text-white py-2 px-4 rounded">Return</button>
+                                        class="bg-red-400 text-white py-2 px-4 rounded hover:underline">Return</button>
                             </td>
                         </tr>
 
@@ -117,7 +123,7 @@
 
                             <th class="p-2">Name</th>
                             <th class="p-2">Loan Date</th>
-                            <th class="p-2">Returned Date</th>
+                            <th class="p-2">Date Returned</th>
                         </tr>
                     </thead>
                     {% endif %}
@@ -143,9 +149,9 @@
 
             </div>
         </div>
-    </div>
-
+    </section>
     {% endif %}
+
 
 </div>
 
