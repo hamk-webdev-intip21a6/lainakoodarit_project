@@ -17,6 +17,10 @@ def remove_images(image_path: str) -> None:
         os.remove(image_path)
     except OSError as error:
         print('OSError:', error)
+    except TypeError as error:
+        print('TypeError:', error)
+    except:
+        pass
     return
 
 
