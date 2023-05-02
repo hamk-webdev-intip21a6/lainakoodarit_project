@@ -58,25 +58,27 @@
       </select>
     </div>
     <!-- Category -->
-    <div class="flex gap-x-2">
-      <label for="category_books" class="select">Books</label>
+    <div class="flex gap-x-2 [&>input]:accent-red-200 mx-auto">
+      <label for="category_books" class="transition-all hover:text-red-700">Books</label>
       <input type="checkbox" name="category" id="category_books" value="book"/>
-      <label for="category_music" class="select">Music</label>
+      <label for="category_music" class="transition-all hover:text-red-700">Music</label>
       <input type="checkbox" name="category" id="category_music" value="music"/>
-      <label for="category_movies" class="select">Movies</label>
-      <input type="checkbox" name="category" id="category_movies" value="movie"/>
+      <label for="category_movies" class="transition-all hover:text-red-700">Movies</label>
+      <input type="checkbox" name="category" id="category_movies" value="movie" 
+        class="transition-all hover:text-red-700"/>
     </div>
     <!-- Available -->
-    <div class="flex gap-x-2">
-      <label for="available">Only list available products</label>
-      <input type="checkbox" name="available" id="available" value="available"/>
+    <div class="flex gap-x-2 [&>input]:accent-red-200 mx-auto">
+      <label for="available" class="transition-all hover:text-red-700">Only list available products</label>
+      <input type="checkbox" name="available" id="available" value="available"
+      class="transition-all hover:font-semibold"/>
     </div>
     
-    <button type="submit" class="bg-red-400 text-neutral-100 font-semibold w-20 px-4 py-2 rounded
-    transition-all hover:text-neutral-900 active:brightness-75">Search</button>
+    <button type="submit" class="bg-red-400 text-neutral-100 font-semibold w-full px-4 py-2 rounded
+    transition-all hover:shadow-lg hover:text-neutral-900 active:brightness-75">Search</button>
   </form>
   <!-- user guide -->
-  <div class="col-span-5 flex flex-col gap-y-2 justify-center order-first mt-10 text-center md:order-last md:col-span-2 lg:col-span-3">
+  <div class="col-span-5 flex flex-col gap-y-2 justify-center order-first mt-10 text-center md:order-last lg:col-span-3">
     <div>
       <h2 class="text-lg text-center font-semibold">Guide</h2>
       <p>
@@ -84,7 +86,6 @@
         You can also filter by author, genre, language and category. 
         It is also possible to filter results to only show available products.
         Use these filters to search and find a product that fits your needs and interests!
-        You can also search for specific categories from the navigation bar.
       </p>
     </div>
     <p>Don't have an account? 
