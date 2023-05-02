@@ -1,5 +1,5 @@
 # Create your views here.
-from django.db.models import ObjectDoesNotExist
+from django.db.models import F, ObjectDoesNotExist
 from django.views import generic
 from .models import Product, Event, Author
 from django.shortcuts import get_object_or_404, redirect
@@ -75,13 +75,16 @@ class ProductListView(generic.ListView):
         author_name_query = self.request.GET.get('author')
         if author_name_query:
             queryset = queryset.filter(author__author_name=author_name_query)
+        available_query = self.request.GET.get('available')
+        if available_query:
+            queryset = queryset.filter(loaned_amount__lt=F('amount'))
         # loops through the GET requests
         for key, values in self.request.GET.lists():
             # if get query keyword is author, change it to correct attribute name
             key = 'author__author_name' if key == 'author' else key
             # check if the key agument of a request is a Product attribute
             # and that the kwarg is not empty
-            if not hasattr(Product, key) and not values[0]:
+            if not hasattr(Product, key) or not values[0]:
                 # if either of these doesn't pass, continue iterating
                 continue
 
@@ -106,9 +109,9 @@ class ProductListView(generic.ListView):
 def create_loan(request, pk):
 
     loan_times = {
-        "music" : datetime.today() + timedelta(days=7),
-        "book" : datetime.today() + timedelta(days=30),
-        "movie" : datetime.today() + timedelta(days=3)
+        "music": datetime.today() + timedelta(days=7),
+        "book": datetime.today() + timedelta(days=30),
+        "movie": datetime.today() + timedelta(days=3)
     }
 
     # first get the product
@@ -117,7 +120,8 @@ def create_loan(request, pk):
     try:
         # then create a loan event
         loan_time = loan_times[product.category]
-        loan = Event.objects.create(user=request.user, product=product, return_date=loan_time)
+        loan = Event.objects.create(
+            user=request.user, product=product, return_date=loan_time)
         loan.save()
     except ObjectDoesNotExist:
         return redirect(redirect_url + '?success=false&event=loan')
