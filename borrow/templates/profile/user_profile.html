@@ -83,9 +83,11 @@
                             <td class="p-2">{{ event.return_date|date:"d.m.Y" }}</td>
 
                             <td class="p-2">
-                                {% if loan.is_late %}
+                                {% if current_date > event.return_date %}
 
                                 <i class="bi bi-exclamation-circle-fill" style="color: rgb(248 113 113);"></i>
+                                {% else %}
+                                -
                                 {% endif %}
 
                             </td>

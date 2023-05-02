@@ -35,9 +35,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['user_loans'] = Event.objects.filter(user=self.request.user)
 
-        today_datetime = timezone.make_aware(datetime.combine(timezone.localtime(timezone.now()).date(), time.min))
-        for loan in context['user_loans']:
-            loan.is_late = today_datetime > loan.return_date
+        context['current_date'] = timezone.now()
 
         return context
 
