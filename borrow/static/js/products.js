@@ -1,3 +1,6 @@
+/*
+  Script for toggling the "Read more" button on the product page
+*/
 const readMoreButton = document.querySelector("button#readmore");
 const description = document.querySelector("div#description");
 

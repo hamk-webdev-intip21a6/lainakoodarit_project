@@ -10,6 +10,8 @@ cancelAlertButton.addEventListener("click", () => {
   removeAlertButton();
 });
 
+// show the alert box right when DOM is loaded
+// if the view got the required GET requests
 fadeAndMove();
 
 async function removeAlertButton() {

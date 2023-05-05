@@ -1,3 +1,7 @@
+/*
+  Script for making the product sliders at the end of the page work
+  and scrollable on desktop as well as phones
+*/
 const slider = document.querySelector(".carousel");
 let isDown = false;
 let startX;
