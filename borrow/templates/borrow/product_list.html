@@ -37,7 +37,8 @@
       <a href="{% url 'borrow:product' listing.id %}" draggable="false"
         class="product-card shadow-md flex flex-col select-none group">
         <!-- product image -->
-        <div class="product-img overflow-hidden aspect-[4/3] sm:aspect-square group relative">
+        <div class="product-img overflow-hidden aspect-[4/3] sm:aspect-square group relative
+          {% if listing.loaned_amount == listing.amount %} opacity-50 {% endif %}">
           {% if listing.image %}
             <img src="{{ listing.image.url }}" alt="{{ listing.name}} -thumbnail" width="200" height="200" draggable="false"
               class="object-cover w-full h-full transition-all group-hover:scale-110"/>

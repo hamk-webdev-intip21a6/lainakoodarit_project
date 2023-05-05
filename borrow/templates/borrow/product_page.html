@@ -65,7 +65,7 @@
         flex flex-col gap-y-5">
         <div class="prouct-header">
           <h1 class="text-2xl font-bold">{{ product.name }}</h1>
-          <p class="opacity-50 font-semibold">{{ product.category|title }}</p>
+          <p class="opacity-50 font-semibold">{{ product.category|title }} | {{ product.genre|title }}</p>
         </div>
         <!-- <hr class="my-5 border-neutral-300"/> -->
         <!-- creator info -->
@@ -117,7 +117,7 @@
 <!-- additional information -->
 <section class="max-w-[700px] mx-auto my-8 px-5">
   <h3 class="font-semibold text-center mb-5">Additional information</h3>
-  <div class="grid grid-cols-2 mx-auto gap-y-6 gap-x-5 sm:grid-cols-3">
+  <div class="grid grid-cols-2 mx-auto gap-y-6 gap-x-5 sm:grid-cols-4">
     {% if product.date_added %}
     <div class="flex flex-col gap-x-2 items-center">
       <!-- icon -->
@@ -135,18 +135,18 @@
       </div>
     </div>
     {% endif %}
-    {% if product.tags %}
+    {% if product.category %}
     <div class="flex flex-col gap-x-2 justify-evenly items-center">
       <!-- icon -->
       <div class="text-center">
-        <h4 class="mb-2 font-semibold">Tags</h4>
-        <img src="{% static 'icons/tag.svg' %}" alt="tags -icon" width="30" height="30"
+        <h4 class="mb-2 font-semibold">Category</h4>
+        <img src="{% static 'icons/tag.svg' %}" alt="category -icon" width="30" height="30"
         class="mx-auto"/>
       </div>
       <!-- content -->
       <div class="flex gap-x-5">
         <p class="justify-center">
-          {{ product.tags|join:", " }}
+          {{ product.category|title }}
         </p>
       </div>
     </div>
@@ -162,7 +162,7 @@
       <!-- content -->
       <div class="flex gap-x-5">
         <p class="justify-center">
-          {{ product.language }}
+          {{ product.language|title }}
         </p>
       </div>
     </div>
@@ -172,8 +172,13 @@
       <!-- icon -->
       <div class="text-center">
         <h4 class="mb-2 font-semibold">Availability</h4>
+        {% if available %}
         <img src="{% static 'icons/storage.svg' %}" alt="tags -icon" width="30" height="30"
-        class="mx-auto"/>
+          class="mx-auto"/>
+        {% else %}
+        <img src="{% static 'icons/storage.svg' %}" alt="tags -icon" width="30" height="30"
+          class="mx-auto opacity-50"/>
+        {% endif %}
       </div>
       <!-- content -->
       <div class="flex gap-x-5 mx-auto">
@@ -187,7 +192,7 @@
 </section>
 
 <!-- most recent additions -->
-<section class="max-w-[1200px] mx-auto mt-10 px-5">
+<section class="max-w-[1200px] mx-auto my-10 px-5">
   <h3 class="font-semibold mb-2">Recent additions</h3>
   <div class="carousel grid grid-flow-col text-center pb-6 overflow-auto gap-x-4">
     {% for listing in recent_additions %}
